@@ -1,0 +1,72 @@
+import React, { Component } from 'react';
+import Owner from './Owner';
+import firebase from '../../../config/firebase'
+
+class OwnerClass extends Component {
+    constructor() {
+        super()
+        this.state = {
+            user: JSON.parse(sessionStorage.user),
+            hallData: '',
+            hallDataArr: [],
+            start: 0,
+            end: 3,
+            isData: true
+        }
+
+        this.updatePage = this.updatePage.bind(this)
+    }
+
+    async componentWillMount() {
+        const { user, hallDataArr } = this.state
+
+        await firebase.database().ref('allHallData').child(`${user.uid}`).on('child_added', (val) => {
+            var value = val.val()
+            value['key'] = val.key
+            hallDataArr.push(value)
+            this.setState({
+                hallData: hallData,
+                hallDataArr
+            })
+        })
+        const { hallData } = user
+
+        // for (var i in hallData) {
+        //     hallDataArr.push(hallData[i])
+        // }
+        this.setState({
+            hallData: hallData,
+            hallDataArr
+        })
+
+        !this.state.hallDataArr.length && setTimeout(() => {
+            this.setState({
+                isData: false
+            })
+        },4000)
+    }
+
+    updatePage(num) {
+        var number = num * 3
+        this.setState({
+            start: number - 3,
+            end: number
+        })
+    }
+
+    render() {
+        const { user, hallData, hallDataArr, start, end, isData } = this.state
+        return (
+            <Owner
+                user={user}
+                hallData={hallData}
+                hallDataArr={hallDataArr}
+                start={start}
+                end={end}
+                updatePage={this.updatePage}
+                isData={isData}
+            />
+        );
+    }
+}
+export default OwnerClass;
