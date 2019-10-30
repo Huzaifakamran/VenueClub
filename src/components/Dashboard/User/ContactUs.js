@@ -22,21 +22,6 @@ class ContactUs extends Component {
       }
   }
 
-  // componentDidMount(){
-  //   this.showData();
-  // }
-
-  // showData(){
-  //   firebase.database().ref("/allHallData").on("value", (snapshot)=> {
-  //     snapshot.forEach((childSnapshot)=> {
-  //       // console.log('2' , childSnapshot.val())
-  //         childSnapshot.forEach((a)=>{
-  //           console.log('2' , a.val()) 
-  //         })
-  //     })
-  //   })
-  // }
-
 
  logout() {
   sessionStorage.removeItem('user')
