@@ -27,7 +27,7 @@ class Privacy extends Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav head_ul" style={{ marginLeft: '85%' }}>
+                    <ul className="navbar-nav head_ul" style={{ marginLeft: '75%' }}>
                         <li>   <button title="privacy policy" onClick={() => window.location.href = "/TermsAndCondition"} style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>TERMS & CONDITION</button></li>
                     </ul>
                 </div>

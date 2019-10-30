@@ -31,7 +31,9 @@ class Header extends Component {
                 confirmPassword: '',
                 accountType: '',
                 paymentType: '',
-                numberType: ''
+                numberType: '',
+                secQuestion:'',
+                secAnswer:''
             }
         }
     }
@@ -103,12 +105,13 @@ class Header extends Component {
     signUp() {
         const { obj } = this.state
 
-        if (obj.email == '' || obj.password == '' || obj.fName == '' || obj.lName == '' || obj.email == '' || obj.password == '' || obj.phoneNumber == '' || obj.confirmPassword == '' || obj.accountType == '') {
+        if (obj.email == '' || obj.password == '' || obj.fName == '' || obj.lName == '' || obj.email == '' || obj.password == '' || obj.phoneNumber == '' || obj.confirmPassword == '' || obj.accountType == '' || obj.secQuestion == '' ||obj.secAnswer == '') {
             swal('Fill All textfield(s)')
         }
+    
         else if (obj.accountType == 2) {
             if (obj.paymentType == '' || obj.numberType == '') {
-                swal('Fill')
+                swal('Fill both textfield(s)')
             }
             else {
                 this.setState({
@@ -127,7 +130,9 @@ class Header extends Component {
                         confirmPassword: '',
                         accountType: '',
                         paymentType: '',
-                        numberType: ''
+                        numberType: '',
+                        secQuestion:'',
+                        secAnswer:''
                     }
                     console.log(res)
                     console.log("***")
@@ -162,7 +167,9 @@ class Header extends Component {
                     confirmPassword: '',
                     accountType: '',
                     paymentType: '',
-                    numberType: ''
+                    numberType: '',
+                    secQuestion:'',
+                    secAnswer:''
                 }
                 console.log(res)
                 console.log("***")
@@ -234,19 +241,91 @@ class Header extends Component {
 
         firebase.auth().signInWithPopup(provider)
             .then((result) => {
-                var token = result.credential.accessToken;
-                var user = result.user;
-                console.log(user)
+                if (result.additionalUserInfo.isNewUser) {
+                    this.setState({
+                        obj2: {
+                            fName: result.additionalUserInfo.profile.first_name,
+                            lName: result.additionalUserInfo.profile.last_name,
+                            email: result.user.email,
+                            uid: result.user.uid,
+                        },
+                        email: result.user.email,
+                        phoneNumber: result.user.phoneNumber
+                    }, () => {
+                        window.$('#exampleModalCenter').modal('hide');
+                        window.$('#AdditionalInfo').modal('show');
+                    })
+                }
+                else {
+                    firebase.database().ref('users').child(`${result.user.uid}`).once('value', (value) => {
+                        var val1 = value.val()
+                        val1['key'] = value.key
+                        sessionStorage.setItem('user', JSON.stringify(val1))
+                        swal('login successfull')
+                        window.$('#exampleModalCenter').modal('hide');
+                        if (val1.accountType === "1") {
+                            window.location.href = '/userDashboard'
+                        }
+                        else {
+                            window.location.href = '/OwnerDashboard'
+                        }
+                    })
+                }
             })
             .catch(function (error) {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
+                swal(errorMessage)
                 // The email of the user's account used.
                 var email = error.email;
                 // The firebase.auth.AuthCredential type that was used.
                 var credential = error.credential;
                 // ...
+            });
+    }
+
+    googleLogin() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                if (result.additionalUserInfo.isNewUser) {
+                    this.setState({
+                        obj2: {
+                            fName: result.additionalUserInfo.profile.given_name,
+                            lName: result.additionalUserInfo.profile.family_name,
+                            email: result.user.email,
+                            uid: result.user.uid,
+                        },
+                        email: result.user.email,
+                        phoneNumber: result.user.phoneNumber
+                    }, () => {
+                        window.$('#exampleModalCenter').modal('hide');
+                        window.$('#AdditionalInfo').modal('show');
+                    })
+                }
+                else {
+                    firebase.database().ref('users').child(`${result.user.uid}`).once('value', (value) => {
+                        var val1 = value.val()
+                        val1['key'] = value.key
+                        sessionStorage.setItem('user', JSON.stringify(val1))
+                        swal('login successfull')
+                        window.$('#exampleModalCenter').modal('hide');
+                        if (val1.accountType === "1") {
+                            window.location.href = '/userDashboard'
+                        }
+                        else {
+                            window.location.href = '/OwnerDashboard'
+                        }
+                    })
+                }
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                swal(errorMessage)
+                var email = error.email;
+                var credential = error.credential;
             });
     }
 
@@ -270,7 +349,7 @@ class Header extends Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav head_ul" style={{ marginLeft: '35%' }}>
+                        <ul className="navbar-nav head_ul" style={{ marginLeft: '25%' }}>
                             <li>  <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('Home')}>HOME</button> </li>
                             <li>  <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('Categories')}>CATEGORIES</button></li>
                             <li>   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('AboutUs')}>ABOUT US</button></li>
@@ -308,7 +387,7 @@ class Header extends Component {
                                     <img style={{ width: '100px', height: '100px' }} src={require('../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
                                     <br /><br />
                                     <FacebookLoginButton onClick={() => this.facebookLogin()} />
-                                    <GoogleLoginButton />
+                                    <GoogleLoginButton onClick={() => this.googleLogin()} />
 
                                     <br />
 
@@ -401,15 +480,11 @@ class Header extends Component {
                                         
                                     <div className="form-row">
                                         <div className="col">
-                                        <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="accountType" value={obj.accountType} onChange={(e) => this.updateData(e.target)}>
-                                            <option selected>Security Question</option>
-                                            <option value="5">Best friend name?</option>
-                                            <option value="6">Favourite Sport?</option>
-                                        </select>
+                                        <input type="text" name="secQuestion" value={obj.secQuestion} onChange={(e) => this.updateData(e.target)} className="form-control" id="question" placeholder="Write your security question" />
                                         </div>
 
                                         <div className="col">
-                                            <input type="text" name="securityAnswer" className="form-control" id="question" placeholder="Answer" />
+                                            <input type="text" name="secAnswer" className="form-control" value={obj.secAnswer} onChange={(e) => this.updateData(e.target)} id="answer" placeholder="Answer" />
                                             <span>Remember the answer it will help u when u forgot your password</span>
 
                                         </div>

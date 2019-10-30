@@ -97,11 +97,11 @@ class Register extends Component {
       }
     });
   }
-  logout() {
-    sessionStorage.clear('user')
-    sessionStorage.clear('search')
-    window.location.reload()
-}
+//C   logout() {
+//     sessionStorage.clear('user')
+//     sessionStorage.clear('search')
+//     window.location.reload()
+// }
 
 
 
@@ -109,15 +109,16 @@ class Register extends Component {
     const { user, newPassword, confirm } = this.state
     return (
       <div>
-        <AppBar style={{ background: '#3c3c3c' }} position="absolute">
+        <AppBar style={{ background: '#3c3c3c',marginTop: -100 }} position="absolute">
           <Toolbar>
             <Typography component="h1" variant="h6" color="inherit" >
-               <IconButton color="inherit" title="Back">
-                  <ArrowBack onClick={() => window.location.href = '/userDashboard'} />   
-                </IconButton>&nbsp;&nbsp; User | Account Setting
+               <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/userDashboard'}>
+                  <ArrowBack />   
+                </IconButton>&nbsp;&nbsp; userDashboard || Setting
             </Typography>
             <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
 
+            <Button style={{ color: 'white' }} onClick={() => window.location.href='/userDashboard'}>Home</Button>
               <IconButton style={{ color: '#ffffff' }} title="Message" onClick={() => window.location.href = '/user/chat'}>
                 <Message />
               </IconButton>
@@ -137,25 +138,21 @@ class Register extends Component {
             <div style={{ marginLeft: '40px', marginRight: '40px', marginTop: '40px', marginBottom: '40px' }}> <h2>Edit contact information</h2><hr />
               <div className="form-row mt-3">
                 <div className="col">
-                  <label for="inputName">First name</label>
+                  <label for="inputName" style={{float:'left'}}>First name</label>
                   <input type="text" name="fName" onChange={(e) => this.updateData(e.target)} value={user.fName} className="form-control" id="inputName" />
                 </div>
 
 
                 <div className="col">
-                  <label for="inputName">Last name</label>
+                  <label for="inputName" style={{float:'left'}}>Last name</label>
                   <input type="text" name="lName" onChange={(e) => this.updateData(e.target)} value={user.lName} className="form-control" id="inputName" />
                 </div>
               </div>
 
               <div className="form-row mt-2">
-                <div className="col">
-                  <label for="inputCapacity">Email</label>
-                  <input type="email" name="email" value={user.email} onChange={(e) => this.updateData(e.target)} className="form-control" />
-                </div>
 
                 <div className="col">
-                  <label for="inputPrice">Phone</label>
+                  <label for="inputPrice" style={{float:'left'}}>Contact number</label>
                   <input type="number" name="phoneNumber" onChange={(e) => this.updateData(e.target)} value={user.phoneNumber} className="form-control" />
                 </div>
               </div>
@@ -176,7 +173,7 @@ class Register extends Component {
                 {/* <label for="inputPassword">Current password</label>
                 <input type="password" className="form-control" /> */}
 
-                <label for="inputPassword">New password</label>
+                <label for="inputPassword" style={{float:'left'}}>New password</label>
                 <input type="password" className="form-control" name="newPassword" value={newPassword} onChange={(e) => this.setState({ newPassword: e.target.value }, () => {
                   if (this.state.newPassword.length && this.state.confirm.length) {
                     this.setState({ disable1: false })
@@ -186,7 +183,7 @@ class Register extends Component {
                   }
                 })} />
 
-                <label for="inputPassword">Confirm password</label>
+                <label for="inputPassword" style={{float:'left'}}>Confirm password</label>
                 <input type="password" className="form-control" name="confirm" value={confirm} onChange={(e) => this.setState({ confirm: e.target.value }, () => {
                   if (this.state.newPassword.length && this.state.confirm.length) {
                     this.setState({ disable1: false })

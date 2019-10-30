@@ -155,14 +155,30 @@ class OwnerBooking extends Component {
                 <AppBar style={{ background: '#3c3c3c' }} position="fixed">
                     <Toolbar>
                         <Typography component="h1" variant="h6" color="inherit" >
-                            <IconButton color="inherit" title="Back">
-                                <ArrowBack onClick={() => window.location.href = '/OwnerDashboard'} />   
-                            </IconButton>&nbsp;&nbsp; Owner Dashboard || Bookings
-                        </Typography>
+                         <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
+                            <ArrowBack />   
+                         </IconButton>&nbsp;&nbsp; Owner Dashboard || Booking Requests
+                         </Typography>
                         <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
+                            <Button style={{ color: 'white' }}>Home</Button>
+                            
+                            <IconButton style={{ color: '#ffffff' }} title="Message">
+                                <Message />
+                            </IconButton>
+
+                            <Link to="/RegisterHall">
+                                <IconButton style={{ color: '#ffffff' }} title="Register Hall">
+                                    <RegisterIcon />
+                                </IconButton>
+                            </Link>
+
+
                             <IconButton color="inherit" title="Profile">
                                 <UserIcon />
                             </IconButton>
+                            <Button style={{ color: 'white' }} onClick={() => this.logout()} >Logout</Button>
+
+
                         </div>
 
                     </Toolbar>

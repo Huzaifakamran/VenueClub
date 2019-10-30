@@ -113,7 +113,10 @@ function logout() {
   sessionStorage.removeItem('user')
   window.location.reload()
 }
-
+function viewVenue(v) {
+  sessionStorage.setItem('view', JSON.stringify(v))
+  window.location.href = '/myVenueView'
+}
 
 export default function Dashboard(props) {
 
@@ -160,6 +163,8 @@ export default function Dashboard(props) {
           <Button style={{ color: 'white' }}>Manage Venues</Button> */}
           {/*H <Button style={{ color: 'white' }} onClick={() => logout()}>Logout</Button> */}
 
+          <Button style={{ color: 'white' }} onClick={() => window.location.reload()}>Home</Button>
+
           <Link to="OwnerDashboard/chat">
             <IconButton style={{ color: '#ffffff' }} title="Message">
               <Message />
@@ -190,10 +195,10 @@ export default function Dashboard(props) {
         open={open}
       >
         
-        <div>
-          <img style={{ width: '60px', height: '60px' }} src={require('../../../resources/images/final.png')} onClick={() => window.location.href='/'}/>
-          <h3 className="ml-5 font_righteous" style={{ marginTop: '-30px' }}>Venue Club</h3></div>
-        <Divider className="mt-2" />
+        <div className="font_righteous" >
+          <img style={{float:'left',width: '60px', height: '60px' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+          <h1 style={{float:'left',marginTop:'30px'}}> Venue Club</h1></div>
+        <Divider className="mt-1"/>
         <div className="my-3">
           <List >{mainListItems}</List>
         </div>
@@ -212,6 +217,7 @@ export default function Dashboard(props) {
           <Grid container spacing={3}>
             <Grid item xs={12} md={12} lg={9}>
               <Paper className={fixedHeightPaper}>
+
                 {props.hallDataArr.length && props.isData ? <div style={{ background: '#ECECEC', padding: '30px' }}>
                   <Row gutter={16}>
                     {props.hallDataArr.slice(props.start, props.end).map((v, i) => {
@@ -221,6 +227,9 @@ export default function Dashboard(props) {
                           cover={<img alt="example" style={{ height: 260 }} src={v.picture} />}
                         >
                           <Meta title={v.hallName} description={`Rs ${v.price}`} />
+                          <Btn type="secondary" style={{ marginTop: 10 }} onClick={() => viewVenue(v)} block>
+                            View Venue
+                           </Btn>
                         </Card>
                       </Col>
                     })}
@@ -240,13 +249,7 @@ export default function Dashboard(props) {
                     : <Skeleton />}
               </Paper>
             </Grid>
-            {/* Recent Deposits */}
-            {/* <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid> */}
-            {/* Recent Orders */}
+    
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Orders />

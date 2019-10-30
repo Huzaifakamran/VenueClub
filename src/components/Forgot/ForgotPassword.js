@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import './../../resources/bootstrap.min.css';
 import SearchIcon from '@material-ui/icons/Search';
+import firebase from '../../config/firebase';
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -16,6 +17,34 @@ class ForgotPassword extends Component {
         }
     }
 
+    sendEmail(){
+
+        var actionCodeSettings = {
+            // The URL to redirect to for sign-in completion. This is also the deep
+            // link for mobile redirects. The domain (www.example.com) for this URL
+            // must be whitelisted in the Firebase Console.
+            url: 'https://www.example.com/finishSignUp?cartId=1234',
+            iOS: {
+              bundleId: 'com.example.ios'
+            },
+            android: {
+              packageName: 'com.example.android',
+              installApp: true,
+              minimumVersion: '12'
+            },
+            // This must be true.
+            handleCodeInApp: true
+          };
+
+
+        firebase.auth().sendSignInLinkToEmail('mohammadhuzaifa72@gmail.com', actionCodeSettings)
+    .then(function(success) {
+     console.log(success)
+    })
+    .catch(function(error) {
+      console.log(error) 
+    });
+    }
     render() {
         
         return (
@@ -23,8 +52,8 @@ class ForgotPassword extends Component {
                  <AppBar style={{ background: '#3c3c3c' }} position="absolute">
           <Toolbar>
             <Typography component="h1" variant="h6" color="inherit" >
-               <IconButton color="inherit" title="Back">
-                  <ArrowBack onClick={() => window.location.href = '/userDashboard'} />   
+               <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/userDashboard'}>
+                  <ArrowBack />   
                 </IconButton>&nbsp;&nbsp; Venue Club
             </Typography>
            
@@ -39,7 +68,7 @@ class ForgotPassword extends Component {
             border:'2px solid #ccc',boxSizing:'border-box',borderBlockStyle:'solid'}}
             />&nbsp;
         <br/>
-            <button type="button" className="btn btn-success" style={{padding:'10px 10px'}} onClick={()=>window.location.href='/ForgotPassword/Security'}>Search Email &nbsp;<SearchIcon/></button>
+            <button type="button" className="btn btn-success" style={{padding:'10px 10px'}} onClick={()=>window.location.href='/ForgotPassword/Security'} onClick={() => this.sendEmail()}>Search Email &nbsp;<SearchIcon/></button>
             
             
         </div>

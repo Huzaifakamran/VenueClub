@@ -158,10 +158,10 @@ export default function Dashboard() {
         open={open}
       >
         
-        <div>
-          <img style={{ width: '60px', height: '60px' }} src={require('../../../resources/images/final.png')}/>
-          <h3 className="ml-5 font_righteous" style={{ marginTop: '-30px' }}>Venue Club</h3></div>
-        <Divider className="mt-2" />
+        <div className="font_righteous" >
+          <img style={{float:'left',width: '60px', height: '60px' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+          <h1 style={{float:'left',marginTop:'30px'}}> Venue Club</h1></div>
+        <Divider className="mt-1"/>
         <div className="my-3">
           <List >{mainListItems}</List>
         </div>

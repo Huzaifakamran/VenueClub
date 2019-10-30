@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import RegisterIcon from '@material-ui/icons/AddCircle'
 import Message from '@material-ui/icons/Message';
 import UserIcon from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
 import DotsIcon from '@material-ui/icons/MoreVert';
 import { mainListItems, secondaryListItems } from './listItems';
 import { Link } from 'react-router-dom';
@@ -23,6 +24,7 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 import { Button } from '@material-ui/core';
 import 'antd/dist/antd.css';
+import '../../../resources/bootstrap.min.css';
 import { Card, Skeleton, Table } from 'antd';
 
 const { Meta } = Card;
@@ -176,10 +178,12 @@ export default function Dashboard(props) {
             &nbsp;
              User Dashboard
             </Typography>
+            <Button style={{ color: 'white' }} onClick={() => window.location.reload()}>Home</Button>
+           
             <IconButton onClick={() => window.location.href = '/user/chat'} style={{ color: '#ffffff' }} title="Message">
             <Message />
           </IconButton>
-          {/*H <Button style={{ color: 'white' }} onClick={() => logout()}>Logout</Button> */}
+           
 
           {/* <Link to="/RegisterHall">
             <IconButton style={{ color: '#ffffff' }} title="Register Hall">
@@ -188,11 +192,18 @@ export default function Dashboard(props) {
           </Link> */}
 
 
-          <IconButton color="inherit" title="Profile">
-          <Button style={{ color: 'white' }} >{props.user.fName}</Button>
-            <UserIcon />
+          <IconButton className="dropdown" color="inherit" title="Profile" style={{paddingRight:'50px'}}>
+          {/* <Button style={{ color: 'white' }} >{props.user.fName}</Button> */}
+            <UserIcon className="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button class="dropdown-item" type="button">Action</button>
+              <button class="dropdown-item" type="button">Another action</button>
+              <button class="dropdown-item" type="button">Something else here</button>
+            </div>
+          
+          
           </IconButton>
-
+          
 
         </Toolbar>
       </AppBar>
@@ -205,10 +216,10 @@ export default function Dashboard(props) {
         open={open}
       >
        
-        <div>
-          <img style={{ width: '60px', height: '60px' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
-          <h3 className="ml-5 font_righteous" style={{ marginTop: '-30px' }}>Venue Club</h3></div>
-        <Divider className="mt-2" />
+        <div className="font_righteous" >
+          <img style={{float:'left',width: '60px', height: '60px' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+          <h1 style={{float:'left',marginTop:'30px'}}> Venue Club</h1></div>
+        <Divider className="mt-1"/>
         <div className="my-3">
           <List >{mainListItems}</List>
         </div>
@@ -227,11 +238,18 @@ export default function Dashboard(props) {
       <br/>
         <Table
           // pagination={false}
-          style={{ width: '94%',border:'solid' }}
+          style={{ marginLeft:'10px', width: '94%',border:'solid' }}
           columns={columns}
           dataSource={props.data.slice().reverse()}
         />
-      </div> : <Skeleton active />}
-    </div>
+       </div> /*: !props.isData ? <div style={{ width: '100%', justifyContent: 'center', textAlign: 'center', marginTop: 140 }}>
+       <h1 className="font_righteous"> Welcome to the user dashboard</h1>
+       <img style={{width:'50%', height: '70%' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/><br/><br/>
+       <button type="button" className="btn btn-success" style={{padding:'10px 10px'}} onClick={()=>window.location.href='/searchResult'}>Search Venue &nbsp;<SearchIcon/></button>
+            
+      </div>*/
+      
+      : <Skeleton />} 
+     </div>
   )
 }

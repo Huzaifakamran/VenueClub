@@ -25,27 +25,34 @@ export const mainListItems = (
         <ListItemText primary="Dashboard" style={{color:'#000000'}}/>
       </ListItem>
 
+      <Link to="/adminDashboard/Users">
       <ListItem button>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Users" style={{color:'#000000'}}/>
       </ListItem>
+      </Link>
 
+      <Link to="/adminDashboard/RegisteredHalls">
       <ListItem button>
         <ListItemIcon>
           <MessageIcon />
         </ListItemIcon>
         <ListItemText primary="Registered Halls" style={{color:'#000000'}}/>
       </ListItem>
+      </Link>
 
+      <Link to="/adminDashboard/Bookings">
       <ListItem button>
         <ListItemIcon>
           <BookingIcon />
         </ListItemIcon>
         <ListItemText primary="Bookings" style={{color:'#000000'}}/>
       </ListItem>
-<Link to="/adminDashboard/setting">
+      </Link>
+
+    <Link to="/adminDashboard/setting">
       <ListItem button>
         <ListItemIcon>
           <SettingIcon />
@@ -72,7 +79,7 @@ export const secondaryListItems=(
         <ListItemIcon>
           <ComplainIcon />
         </ListItemIcon>
-        <ListItemText primary="Complains" style={{color:'#000000'}}/>
+        <ListItemText primary="Complaints" style={{color:'#000000'}}/>
       </ListItem>
       <br/><br/><br/><br/>
       <p style={{fontStyle:'italic',marginTop:'30%',marginLeft:'7%'}}>Please read <a style={{color:'blue',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/TermsAndCondition')}>Terms & Condition</a> <br/> and <a style={{color:'blue',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/PrivacyPolicy')}>Privacy Policy</a> carefully.</p>

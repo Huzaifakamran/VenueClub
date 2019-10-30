@@ -22,10 +22,12 @@ import ForgotPassword from './components/Forgot/ForgotPassword';
 import SecurityQuestion from './components/Forgot/SecurityQuestion';
 import TermsAndCondition from './components/TermsAndCondition/Terms';
 import ContactusOwner from './components/Dashboard/Owner/Contactus';
-{/*C import ViewVenue from './components/ViewVenue/ViewVenue';
+import ViewVenue from './components/ViewVenue/ViewVenue';
 import myVenueView from './components/Dashboard/Owner/ViewVenue';
-import EditVenue from './components/Dashboard/Owner/EditVenue';*/}
-
+import EditVenue from './components/Dashboard/Owner/EditVenue';
+import AdminRegisteredHalls from './components/Dashboard/Admin/RegisteredHalls';
+import AdminUsers from './components/Dashboard/Admin/Users';
+import AdminBookings from './components/Dashboard/Admin/Bookings';
 
 function PrivateRoute({ component: Component, isLoggedIn, ...rest }) {
   return (
@@ -72,8 +74,8 @@ class App extends Component {
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/userDashboard" component={UserDashboard} />
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/OwnerDashboard/booking" component={OwnerBooking} />
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/OwnerDashboard/chat" component={OwnerChat} />
-          {/*C <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/myVenueView" component={myVenueView} />
-          <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/editVenue" component={EditVenue} /> */}
+           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/myVenueView" component={myVenueView} />{/*C*/}
+          <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/editVenue" component={EditVenue} /> {/*C*/}
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/user/chat" component={UserChat} />
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/user/contactUs" component={ContactUs} />
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/owner/Contactus" component={ContactusOwner} />
@@ -85,11 +87,14 @@ class App extends Component {
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/OwnerDashboard/setting" component={Setting} />
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/userDashboard/setting" component={UserSetting} />
           <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/adminDashboard/setting" component={AdminSetting} />
-          
+          <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/adminDashboard/RegisteredHalls" component={AdminRegisteredHalls} />
+          <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/adminDashboard/Users" component={AdminUsers} />
+          <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/adminDashboard/Bookings" component={AdminBookings} />
+
           <Route exact path="/searchResult" component={SearchResult} />
           <Route exact path="/OwnerDashboard/Card" component={Card} />
           <Route exact path="/HallDetails" component={HallDetails} />
-          {/*C <Route exact path="/viewVenue" component={ViewVenue} /> */}
+           <Route exact path="/viewVenue" component={ViewVenue} />    {/*C*/}
 
 
 

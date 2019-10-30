@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UserIcon from '@material-ui/icons/AccountCircle';
 import { Button } from '@material-ui/core';
 import RegisterIcon from '@material-ui/icons/AddCircle'
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Message from '@material-ui/icons/Message';
 import { Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Element } from 'react-scroll';
@@ -18,29 +18,33 @@ import Carrousel from '../featured/Carrousel'
 import Search from '../featured/Search';
 import 'antd/dist/antd.css';
 import firebase from '../../config/firebase'
-import { Card, Col, Row, Skeleton, Button as Btn, Form, Modal, Input, DatePicker } from 'antd';
+import { Card, Skeleton, Table, Button as Btn, Form, Modal, Input, DatePicker } from 'antd';
 import swal from 'sweetalert';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
+import './style.css'
 
 const { Meta } = Card
 
+const { Column } = Table;
 
 
 
-class SearchResult extends Component {
+class ViewVenue extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            search: sessionStorage.getItem('search') ? JSON.parse(sessionStorage.getItem('search')) : false,
+            DropdownIsVisible: false,
+            view: sessionStorage.getItem('view') ? JSON.parse(sessionStorage.getItem('view')) : false,
+            userData: '',
             visible: false,
             confirmLoading: false,
             allHallData: [],
             selectedHall: '',
             email: '',
             password: '',
-             phoneNumber: '',   //C
             disable: false,
+            phoneNumber: '',
             user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : false,
             obj: {
                 fName: '',
@@ -50,8 +54,8 @@ class SearchResult extends Component {
                 password: '',
                 confirmPassword: '',
                 accountType: ''
-            }, 
-             obj2: {           //C
+            },
+            obj2: {
                 fName: '',
                 lName: '',
                 email: '',
@@ -59,89 +63,88 @@ class SearchResult extends Component {
                 accountType: '',
                 paymentType: '',
                 numberType: ''
-            }                   //C
+            },
+            images: [],
+            currentIndex: 0,
+            translateValue: 0,
+            data: [],
+            showDescription: false
         }
     }
 
-
-    componentWillMount() {
-        const { search, allHallData } = this.state
-        console.log('user', search)
-        if (search) {
-            firebase.database().ref('allHallData').on('child_added', (val) => {
-                firebase.database().ref('allHallData').child(`${val.key}`).on('child_added', (val1) => {
-                    var value = val1.val()
-                    if (value.hallName.toLowerCase().indexOf(search.vName.toLowerCase()) !== -1 && value.venueLocation.toLowerCase().indexOf(search.vLocation.toLowerCase()) !== -1 && value.venueType.toLowerCase().indexOf(search.vType.toLowerCase()) !== -1) {
-                        value['userUid'] = val.key
-                        value['key'] = val1.key
-                        allHallData.push(value)
-                        this.setState({ allHallData })
-                    }
-                })
-            })
-        }
-        else {
-            firebase.database().ref('allHallData').on('child_added', (val) => {
-                firebase.database().ref('allHallData').child(`${val.key}`).on('child_added', (val1) => {
-                    var value = val1.val()
-                    value['userUid'] = val.key
-                    value['key'] = val1.key
-                    allHallData.push(value)
-                    this.setState({ allHallData })
-                })
-            })
-        }
+    async componentWillMount() {
+        const { data, view } = this.state
+        await firebase.database().ref('users').child(`${view.userUid}`).once('value', (value) => {
+            var i = 1
+            var val1 = value.val()
+            val1['key'] = value.key
+            for (var key in view) {
+                if (key === "picture" || key === "userUid" || key === "key" || key === "description") {
+                    continue
+                }
+                else {
+                    data.push({
+                        key: i,
+                        name: key,
+                        value: view[key]
+                    })
+                    i++;
+                }
+            }
+            for (var key1 in val1) {
+                if (key1 === "email") {
+                    data.push({
+                        key: i,
+                        name: "email",
+                        value: val1[key1]
+                    })
+                    i++;
+                }
+                else if (key1 === "fName") {
+                    data.push({
+                        key: i,
+                        name: "name",
+                        value: val1[key1]
+                    })
+                    i++;
+                }
+                else if (key1 === "phoneNumber") {
+                    data.push({
+                        key: i,
+                        name: "number",
+                        value: val1[key1]
+                    })
+                    i++;
+                }
+            }
+            this.setState({ userData: val1, data })
+        })
     }
 
-    componentDidMount() {
-        sessionStorage.removeItem('search')
-    }
+
+
 
     updateData(e) {
         const { name, value } = e
-         if (value == 2 && name === "accountType") {    //C
-            this.setState({ DropdownIsVisible: true })
-        }
-        else if (value == 1 && name === "accountType") {
-            this.setState({ DropdownIsVisible: false })
-        }                                               //C
         this.setState({
             obj: {
                 ...this.state.obj,
                 [name]: value
-            },
+            }
         })
     }
 
-     updateData1(e) {                   //C
-        const { name, value } = e;
-        if (value == 2 && name === "accountType") {
-            this.setState({ DropdownIsVisible: true })
-        }
-        else if (value == 1 && name === "accountType") {
-            this.setState({ DropdownIsVisible: false })
-        }
-
-        this.setState({
-            obj2: {
-                ...this.state.obj2,
-                [name]: value
-            },
-
-        })
-}                                        //C
-
     handleSubmit = (e) => {
-        const { selectedHall, user } = this.state
+        const { view, user } = this.state
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
             if (err) {
                 return;
             }
             fieldsValue['date-time-picker'] = fieldsValue['date-time-picker'].format('YYYY-MM-DD HH:mm:ss')
-            fieldsValue['hallData'] = selectedHall
+            fieldsValue['hallData'] = view
             fieldsValue['customerUid'] = user.uid
-            fieldsValue['advance'] = selectedHall.price / 10
+            fieldsValue['advance'] = view.price / 10
             fieldsValue['status'] = 'pending'
 
             firebase.database().ref('users').child(`${user.uid}/sentBooking/`).push(fieldsValue)
@@ -151,10 +154,14 @@ class SearchResult extends Component {
                         title: "successfully!",
                         text: "Send the Booking Request",
                         icon: "success",
-                        // button: "OK",
-                    });
+                    })
                     this.props.form.resetFields()
-                    firebase.database().ref('users').child(`${selectedHall.userUid}/recBooking/${snap.key}`).set(fieldsValue)
+                    firebase.database().ref('users').child(`${view.userUid}/recBooking/${snap.key}`).set(fieldsValue)
+                        .then(() => {
+                            setTimeout(() => {
+                                window.location.href = '/searchResult'
+                            }, 1000)
+                        })
                 })
         })
     }
@@ -162,23 +169,23 @@ class SearchResult extends Component {
     logout() {
         sessionStorage.clear('user')
         sessionStorage.clear('search')
-        window.location.reload()
+        window.location.href = '/'
     }
 
-    venueBooking(v) {                       //C
-        const { user } = this.state
+    venueBooking() {
+        const { user, view } = this.state
         if (user) {
-            this.setState({ visible: true, selectedHall: v }, () => {
+            this.setState({ visible: true, selectedHall: view }, () => {
                 this.props.form.setFieldsValue({
-                    hallName: v.hallName,
+                    hallName: view.hallName,
                     name: user.fName
                 })
             })
         }
         else {
-            this.setState({ selectedHall: v }, () => {
+            this.setState({ selectedHall: view }, () => {
                 this.props.form.setFieldsValue({
-                    hallName: v.hallName
+                    hallName: view.hallName
                 })
                 this.showLogin()
             })
@@ -209,17 +216,15 @@ class SearchResult extends Component {
                 .then((res) => {
                     console.log(res)
                     firebase.database().ref('users').child(`${res.user.uid}`).once('value', (value) => {
-                        console.log(value.val())
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
                         swal('login successfull')
                         window.$('#exampleModalCenter').modal('hide');
-                        console.log("Hello")
                         if (val1.accountType === "2") {
                             window.location.href = '/OwnerDashboard'
                         }
-                        else if (this.state.selectedHall) {    //C
+                        else if (this.state.selectedHall) {
                             this.props.form.setFieldsValue({
                                 name: val1.fName
                             })
@@ -233,7 +238,7 @@ class SearchResult extends Component {
                             this.setState({
                                 user: val1,
                             })
-                        }                                       //C
+                        }
                     })
                     this.setState({
                         email: '',
@@ -253,7 +258,7 @@ class SearchResult extends Component {
         if (obj.email == '' || obj.password == '' || obj.fName == '' || obj.lName == '' || obj.email == '' || obj.password == '' || obj.phoneNumber == '' || obj.confirmPassword == '' || obj.accountType == '') {
             swal('Fill All textfield(s)')
         }
-        else if (obj.accountType == 2) {   //C
+        else if (obj.accountType == 2) {
             if (obj.paymentType == '' || obj.numberType == '') {
                 swal('Fill')
             }
@@ -289,7 +294,7 @@ class SearchResult extends Component {
                         swal('something went wrong' + error);
                     });
             }
-        }    //C
+        }
         else {
             this.setState({
                 disable: true
@@ -306,33 +311,33 @@ class SearchResult extends Component {
                     password: '',
                     confirmPassword: '',
                     accountType: '',
-                    paymentType: '',  //C
-                    numberType: ''    //C
+                    paymentType: '',
+                    numberType: ''
                 }
-                
                 firebase.database().ref('users').child(`${res.user.uid}/`).set(obj)
-                .then(() => {  //C
-                    sessionStorage.setItem('user', JSON.stringify(obj))
-                    swal('Signup successfull');
-                    window.$('#signupModalCenter').modal('hide');
-                    if (this.state.selectedHall) {
-                        this.props.form.setFieldsValue({
-                            name: obj.fName
-                        })
+                    .then(() => {
+                        sessionStorage.setItem('user', JSON.stringify(obj))
+                        swal('Signup successfull');
+                        window.$('#signupModalCenter').modal('hide');
+                        if (this.state.selectedHall) {
+                            this.props.form.setFieldsValue({
+                                name: obj.fName
+                            })
 
-                        this.setState({
-                            user: obj,
-                            visible: true,
-                            disable: false
-                        })
-                    }
-                    else {
-                        this.setState({
-                            user: obj,
-                            disable: false
-                        })
-                    }
-                })   //C
+                            this.setState({
+                                user: obj,
+                                visible: true,
+                                disable: false
+                            })
+                        }
+                        else {
+                            this.setState({
+                                user: obj,
+                                disable: false
+                            })
+                        }
+                    })
+
             })
                 .catch((error) => {
                     swal('something went wrong' + error);
@@ -343,6 +348,38 @@ class SearchResult extends Component {
     viewVenue(v) {
         sessionStorage.setItem('view', JSON.stringify(v))
         window.location.href = '/viewVenue'
+    }
+
+    goToPrevSlide = () => {
+        if (this.state.currentIndex === 0)
+            return;
+
+        this.setState(prevState => ({
+            currentIndex: prevState.currentIndex - 1,
+            translateValue: prevState.translateValue + this.slideWidth()
+        }))
+    }
+
+    goToNextSlide = () => {
+        // Exiting the method early if we are at the end of the images array.
+        // We also want to reset currentIndex and translateValue, so we return
+        // to the first image in the array.
+        if (this.state.currentIndex === this.state.view.picture.length - 1) {
+            return this.setState({
+                currentIndex: 0,
+                translateValue: 0
+            })
+        }
+
+        // This will not run if we met the if condition above
+        this.setState(prevState => ({
+            currentIndex: prevState.currentIndex + 1,
+            translateValue: prevState.translateValue + -(this.slideWidth())
+        }));
+    }
+
+    slideWidth = () => {
+        return document.querySelector('.slide').clientWidth
     }
 
     facebookLogin() {
@@ -530,30 +567,25 @@ class SearchResult extends Component {
         }
     }
 
-  
 
     render() {
-        const { allHallData, visible, search, user, obj, email, password , obj2, phoneNumber, DropdownIsVisible} = this.state
+        const { data, userData, obj, email, password, user, showDescription, view, visible, phoneNumber, obj2, DropdownIsVisible } = this.state
         const { getFieldDecorator } = this.props.form;
+
         return (
             <div>
                 <Element name="Home">
-
                     <AppBar style={{ background: '#3c3c3c' }} position="fixed">
                         <Toolbar>
                             <Typography component="h1" variant="h6" color="inherit" >
-
-                            <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/userDashboard'}>
-                            <ArrowBack />   
-                            </IconButton>&nbsp;&nbsp; Search Result
-                            
+                                {user ? "User Dashboard" : "Venue Club"}
                             </Typography>
                             <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
                                 {user ? <div>
-                                    
                                     <Button style={{ color: 'white' }} onClick={() => window.location.href = '/userDashboard'} >Home</Button>
                                     {/* <Button style={{ color: 'white' }}>Manage Venues</Button> */}
-                                   
+                                    <Button style={{ color: 'white' }} onClick={() => this.logout()}>Logout</Button>
+
                                     {/* <IconButton style={{ color: '#ffffff' }} title="Message">
                                     <Message />
                                 </IconButton> */}
@@ -564,8 +596,6 @@ class SearchResult extends Component {
                                             <UserIcon />
                                         </IconButton>
                                     </Button>
-                                    <Button style={{ color: 'white' }} onClick={() => this.logout()}>Logout</Button>
-
                                 </div>
                                     : <div>
                                         <Button style={{ color: 'white' }} onClick={() => window.location.href = '/privacyPolicy'}>
@@ -598,10 +628,10 @@ class SearchResult extends Component {
 
 
                                                 <div className="modal-body" style={{ textAlign: 'center' }}>
-                                                    <img style={{ width: '100px', height: '100px' }} src={require('../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+                                                    <img style={{ width: '100px', height: '100px' }} src={require('../../resources/images/final.png')} />
                                                     <br /><br />
-                                                    <FacebookLoginButton onClick={() => this.facebookLogin()}/>
-                                                    <GoogleLoginButton onClick={() => this.googleLogin()}/>
+                                                    <FacebookLoginButton />
+                                                    <GoogleLoginButton />
 
                                                     <br />
 
@@ -641,63 +671,6 @@ class SearchResult extends Component {
 
 
                                     <div className="modal fade" style={{ overflow: 'scroll' }} id="signupModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div className="modal-dialog modal-dialog-centered" role="document">
-                                            <div className="modal-content">
-                                                <div className="modal-header">
-                                                    <div className="d-flex justify-content-center" style={{ width: '100%' }}>
-                                                        <h5 style={{ color: 'black' }} className="modal-title" id="exampleModalLongTitle1">Additional Info</h5>
-                                                    </div>
-
-                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-
-
-                                                <div className="modal-body" style={{ textAlign: 'center' }}>
-                                                    <br />
-                                                    {!email && <div className="form-group">
-                                                            <input type="email" className="form-control" name="email" value={obj2.email} onChange={(e) => this.updateData1(e.target)} aria-describedby="emailHelp" placeholder="Enter email" />
-                                                        </div>}
-
-                                                        {!phoneNumber && <div className="form-group">
-                                                            <input type="number" name="phoneNumber" value={obj2.phoneNumber} onChange={(e) => this.updateData1(e.target)} className="form-control" placeholder="Phone #" />
-                                                        </div>}
-
-                                                        <select className="custom-select mr-sm-2" name="accountType" value={obj2.accountType} onChange={(e) => this.updateData1(e.target)}>
-                                                            <option selected>Select Account Type...</option>
-                                                            <option value="1">User</option>
-                                                            <option value="2">Hall Owner</option>
-                                                        </select>
-                                                        <br /><br />
-                                                        {DropdownIsVisible &&
-                                                            <div>
-                                                                <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj2.paymentType} onChange={(e) => this.updateData1(e.target)}>
-                                                                    <option selected>Select Payment Method...</option>
-                                                                    <option value="3">Jazz Cash</option>
-                                                                    <option value="4">Easy Paisa</option>
-                                                                </select><br /><br />
-                                                                <div className="form-group">
-                                                                    <input type="number" name="numberType" value={obj2.numberType} onChange={(e) => this.updateData1(e.target)} className="form-control" id="numberType1" placeholder="Enter Your Account phone number (0300xxxxxxx)" />
-                                                                </div>
-                                                            </div>
-
-                                                        }
-                                                </div>
-
-                                                <div className="modal-footer d-flex justify-content-center" style={{ textAlign: 'center' }}>
-                                                        <br />
-                                                        <div>
-                                                            <button disabled={this.state.disable} type="button" className="btn btn-success" onClick={() => this.updateLogin()}>Update</button>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                
-
-                            <div className="modal fade" style={{ overflow: 'scroll' }} id="signupModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <div className="modal-dialog modal-dialog-centered" role="document">
                                             <div className="modal-content">
                                                 <div className="modal-header">
@@ -767,6 +740,7 @@ class SearchResult extends Component {
                                                             </div>
                                                         </div>
                                                     }
+
                                                 </div>
 
                                                 <div className="modal-footer d-flex justify-content-center" style={{ textAlign: 'center' }}>
@@ -789,83 +763,125 @@ class SearchResult extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    </div>
-                            </div>
 
+                                    <div className="modal fade" style={{ overflow: 'scroll' }} id="AdditionalInfo" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div className="modal-dialog modal-dialog-centered" role="document">
+                                            <div className="modal-content">
+                                                <div className="modal-header">
+
+
+
+                                                    <div className="d-flex justify-content-center" style={{ width: '100%' }}>
+                                                        <h5 style={{ color: 'black' }} className="modal-title" id="exampleModalLongTitle1">Additional Info</h5>
+                                                    </div>
+
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+
+                                                <div className="modal-body" style={{ textAlign: 'center' }}>
+
+                                                    <br />
+
+                                                    {!email && <div className="form-group">
+                                                        <input type="email" className="form-control" name="email" value={obj2.email} onChange={(e) => this.updateData1(e.target)} aria-describedby="emailHelp" placeholder="Enter email" />
+                                                    </div>}
+
+                                                    {!phoneNumber && <div className="form-group">
+                                                        <input type="number" name="phoneNumber" value={obj2.phoneNumber} onChange={(e) => this.updateData1(e.target)} className="form-control" placeholder="Phone #" />
+                                                    </div>}
+
+                                                    <select className="custom-select mr-sm-2" name="accountType" value={obj2.accountType} onChange={(e) => this.updateData1(e.target)}>
+                                                        <option selected>Select Account Type...</option>
+                                                        <option value="1">User</option>
+                                                        <option value="2">Hall Owner</option>
+                                                    </select>
+                                                    <br /><br />
+                                                    {DropdownIsVisible &&
+                                                        <div>
+                                                            <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj2.paymentType} onChange={(e) => this.updateData1(e.target)}>
+                                                                <option selected>Select Payment Method...</option>
+                                                                <option value="3">Jazz Cash</option>
+                                                                <option value="4">Easy Paisa</option>
+                                                            </select><br /><br />
+                                                            <div className="form-group">
+                                                                <input type="number" name="numberType" value={obj2.numberType} onChange={(e) => this.updateData1(e.target)} className="form-control" id="numberType1" placeholder="Enter Your Account phone number (0300xxxxxxx)" />
+                                                            </div>
+                                                        </div>
+
+                                                    }
+
+                                                </div>
+                                                <div className="modal-footer d-flex justify-content-center" style={{ textAlign: 'center' }}>
+                                                    <br />
+                                                    <div>
+                                                        <button disabled={this.state.disable} type="button" className="btn btn-success" onClick={() => this.updateLogin()}>Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </Toolbar>
                     </AppBar>
-                    {/*H <div style={{ position: 'relative' }}>
-                        <Carrousel />
 
-                         <div className="artist_name">
-                            <div className="wrapper">Let Us Help You Create</div>
-                        </div> */}
-                        
-                    
                 </Element>
-                <h1 style={{ textAlign: 'center', marginTop: 20 }}>Search Result for</h1>
-                {
-                    search & allHallData.length ? <div>
-                        <h1 style={{ textAlign: 'center', marginTop: 20 }}>Search Result</h1>
-                        <div style={{ background: '#ECECEC', padding: '30px' }}>
-                            <Row gutter={16}>
-                                {allHallData.map((v, i) => {
-                                    return <Col span={8} key={i}>
-                                        <Card
-                                            title={v.hallName}
-                                            hoverable
-                                            cover={<img alt="example" style={{ height: 260 }} src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQefCoQ8XaDsgV3HdlAjqap7esgqwmqB-Xd5AIL9STJIbsjFfII'} />}
-                                        >
-                                            <Meta title={`VenueType: ${v.venueType}`} />
-                                            <br />
-                                            <h3>Advance: {v.price / 10}</h3>
-                                            <h1>{`Rs: ${v.price}`}</h1>
-                                            <p>Address: {v.address}</p>
-                                            <Btn type="primary" onClick={() => this.venueBooking(v)} block>
-                                                Register
-                                        </Btn>
-                                            <br />
-                                            <Btn type="secondary" style={{ marginTop: 10 }} onClick={() => this.viewVenue(v)} block>
-                                                View Venue
-                                        </Btn>
-                                        </Card>
-                                    </Col>
-                                })}
-                            </Row>
+
+                {userData ? <div>
+                    <div style={{ display: 'flex', flexDirection: 'row', marginTop: 45, marginBottom: 10, flex: 1 }}>
+                        <div className="slider" style={{ flex: 5, marginRight: 10, marginTop: 50 }} >
+
+                            <div className="slider-wrapper"
+                                style={{
+                                    transform: `translateX(${this.state.translateValue}px)`,
+                                    transition: 'transform ease-out 0.45s'
+                                }}>
+                                {
+                                    this.state.view.picture.map((image, i) => (
+                                        <Slide key={i} image={image} />
+                                    ))
+                                }
+                            </div>
+
+                            <LeftArrow
+                                goToPrevSlide={this.goToPrevSlide}
+                            />
+
+                            <RightArrow
+                                goToNextSlide={this.goToNextSlide}
+                            />
                         </div>
-                    </div> : allHallData.length ? <div>
-                        <h1 style={{ textAlign: 'center', marginTop: 20 }}>Search Result</h1>
-                        <div style={{ background: '#ECECEC', padding: '30px' }}>
-                            <Row gutter={16}>
-                                {allHallData.map((v, i) => {
-                                    return <Col span={8} key={i}>
-                                        <Card
-                                            style={{ marginTop: 20 }}
-                                            title={v.hallName}
-                                            hoverable
-                                            cover={<img alt="example" style={{ height: 260 }} src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQefCoQ8XaDsgV3HdlAjqap7esgqwmqB-Xd5AIL9STJIbsjFfII'} />}
-                                        >
-                                            <Meta title={`VenueType: ${v.venueType}`} />
-                                            <br />
-                                            <h3>Advance: {v.price / 10}</h3>
-                                            <h1>{`Rs: ${v.price}`}</h1>
-                                            <p>Address: {v.address}</p>
-                                            <Btn type="primary" onClick={() => this.venueBooking(v)} block>
-                                                Register
-                                        </Btn>
-                                            <Btn type="secondary" style={{ marginTop: 10 }} onClick={() => this.viewVenue(v)} block>
-                                                View Venue
-                                        </Btn>
-                                        </Card>
-                                    </Col>
-                                })}
-                            </Row>
+                        <div style={{ flex: 3, marginRight: 10 }}>
+                            <Table pagination={false} dataSource={data} style={{ display: 'inline', width: '30%' }}>
+                                <Column title="" dataIndex="name" key="firstName" />
+                                <Column title="" dataIndex="value" key="lastName" />
+                            </Table>
                         </div>
-                    </div> :
-                            <Skeleton />
-                }
+                    </div>
+                    <div style={{ display: 'flex', flex: 1, flexDirection: 'row', marginRight: 10, marginLeft: 10 }}>
+                        <div style={{ flex: 3 }}>
+                            <div className="card1" onClick={() => this.setState({ showDescription: !showDescription })}>
+                                <p className="title"><i className="fa fa-list-ul"></i> &nbsp; Description</p>
+                            </div>
+                            {showDescription && <div className="card2">
+                                <p className="title">{view.description}
+                                </p>
+                            </div>}
+                        </div>
+                        <div style={{ flex: 1, marginTop: 50, marginLeft: 10 }}>
+                            <Btn type="primary" onClick={() => this.venueBooking()} block>
+                                Register this Venue
+                                        </Btn>
+                        </div>
+                    </div>
+                </div>
+                    : <div style={{ marginTop: 85 }}><Skeleton /></div>}
                 < Footer />
+
                 <Modal
                     visible={visible}
                     title="Create a new collection"
@@ -898,10 +914,6 @@ class SearchResult extends Component {
                         </Form.Item>
                     </Form>
                 </Modal>
-
-
-
-
             </div >
 
 
@@ -909,6 +921,34 @@ class SearchResult extends Component {
     }
 }
 
-const SearchResultForm = Form.create({ name: 'form_in_modal' })(SearchResult);
+const Slide = ({ image }) => {
+    const styles = {
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: '50% 60%'
+    }
+    return <div className="slide" style={styles}></div>
+}
+
+
+const LeftArrow = (props) => {
+    return (
+        <div className="backArrow arrow" onClick={props.goToPrevSlide}>
+            <i className="fa fa-arrow-left fa-2x" aria-hidden="true"></i>
+        </div>
+    );
+}
+
+
+const RightArrow = (props) => {
+    return (
+        <div className="nextArrow arrow" onClick={props.goToNextSlide}>
+            <i className="fa fa-arrow-right fa-2x" aria-hidden="true"></i>
+        </div>
+    );
+}
+
+const SearchResultForm = Form.create({ name: 'form_in_modal' })(ViewVenue);
 
 export default SearchResultForm;

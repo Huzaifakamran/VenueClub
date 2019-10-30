@@ -12,6 +12,7 @@ class OwnerClass extends Component {
             start: 0,
             end: 3,
             data: [],
+            isData: true,
             columns: [
                 {
                     title: 'Hall Name',
@@ -57,8 +58,16 @@ class OwnerClass extends Component {
             hallDataArr,
             data
         })
-    }
 
+        setTimeout(() => {
+            this.checkData()
+        }, 500)
+    }
+    checkData() {
+        !this.state.hallDataArr.length && this.setState({
+            isData: false
+        })
+    }
     updatePage(num) {
         var number = num * 3
         this.setState({
@@ -72,7 +81,7 @@ class OwnerClass extends Component {
     }
 
     render() {
-        const { user, hallDataArr, start, end, data, columns } = this.state
+        const { user, hallDataArr, start, end, data, columns,isData } = this.state
         return (
             <User
                 user={user}
@@ -82,6 +91,7 @@ class OwnerClass extends Component {
                 data={data}
                 end={end}
                 updatePage={this.updatePage}
+                isData={isData}
             />
         );
     }

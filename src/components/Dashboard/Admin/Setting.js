@@ -69,8 +69,8 @@ class Setting extends Component {
                 <AppBar style={{ background: '#3c3c3c' }} position="absolute">
           <Toolbar>
             <Typography component="h1" variant="h6" color="inherit" >
-               <IconButton color="inherit" title="Back">
-                  <ArrowBack onClick={() => window.location.href = '/adminDashboard'} />   
+               <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/adminDashboard'}>
+                  <ArrowBack />   
                 </IconButton>&nbsp;&nbsp; Admin | Account Setting
             </Typography>
             <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
