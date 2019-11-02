@@ -361,10 +361,7 @@ class ViewVenue extends Component {
     }
 
     goToNextSlide = () => {
-        // Exiting the method early if we are at the end of the images array.
-        // We also want to reset currentIndex and translateValue, so we return
-        // to the first image in the array.
-        if (this.state.currentIndex === this.state.view.picture.length - 1) {
+         if (this.state.currentIndex === this.state.view.picture.length - 1) {
             return this.setState({
                 currentIndex: 0,
                 translateValue: 0

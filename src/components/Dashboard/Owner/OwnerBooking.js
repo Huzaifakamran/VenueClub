@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import UserIcon from '@material-ui/icons/AccountCircle';
 import { Button } from '@material-ui/core';
-import RegisterIcon from '@material-ui/icons/AddCircle'
+import RegisterIcon from '@material-ui/icons/AddCircle';
 import Message from '@material-ui/icons/Message';
 import { Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
@@ -51,7 +51,8 @@ class OwnerBooking extends Component {
             ],
             data: [],
             date: new Date(),
-            modalData: ''
+            modalData: '',
+
         }
     }
 
@@ -73,12 +74,13 @@ class OwnerBooking extends Component {
 
     handleOk = () => {
         const { modalData, user } = this.state
+        console.log('modalData', modalData)
         if (modalData.status === "pending") {
             this.setState({
                 ModalText: 'The modal will be closed after two seconds',
                 confirmLoading: true,
             });
-            var message = `Your request has approved Kindly pay the Advance fees Rs: ${modalData.price/10} of ${modalData.hallName}`
+            var message = `Your request has approved Kindly pay the Advance fees Rs: ${Number(modalData.hallData.price) / 10} of ${modalData.hallName} to the admin number : 03133546506`
             var myMsg = {
                 msg: message,
                 recName: modalData.name
@@ -90,6 +92,7 @@ class OwnerBooking extends Component {
 
             firebase.database().ref('users').child(`${user.uid}/chatList/${modalData.customerUid}`).set(modalData.name)
             firebase.database().ref('users').child(`${modalData.customerUid}/chatList/${user.uid}`).set(user.fName)
+            firebase.database().ref('allHallData').child(`${user.uid}/${modalData.hallData.key}/bookings`).set({ [modalData.customerUid]: 1 })
 
             firebase.database().ref('users').child(`${user.uid}/recBooking/${modalData.key}`).update({ status: "Approved" })
             firebase.database().ref('users').child(`${modalData.customerUid}/sentBooking/${modalData.key}`).update({ status: "Approved" })
@@ -155,13 +158,13 @@ class OwnerBooking extends Component {
                 <AppBar style={{ background: '#3c3c3c' }} position="fixed">
                     <Toolbar>
                         <Typography component="h1" variant="h6" color="inherit" >
-                         <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
-                            <ArrowBack />   
-                         </IconButton>&nbsp;&nbsp; Owner Dashboard || Booking Requests
+                            <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
+                                <ArrowBack />
+                            </IconButton>&nbsp;&nbsp; Owner Dashboard || Booking Requests
                          </Typography>
                         <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
-                            <Button style={{ color: 'white' }}>Home</Button>
-                            
+                            <Button style={{ color: 'white' }} onClick={() => window.location.href = '/ownerDashboard'}>Home</Button>
+
                             <IconButton style={{ color: '#ffffff' }} title="Message">
                                 <Message />
                             </IconButton>

@@ -155,7 +155,7 @@ export default function Dashboard(props) {
 
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
 
-            <Link> <DotsIcon id="dot_icon" onClick={handleDrawerClose} style={{ color: 'white' }} /></Link>
+            <Link> <DotsIcon id="dot_icon" onClick={handleDrawerClose} style={{ color: 'white',float:'left' }} /></Link>
             &nbsp;
              Owner Dashboard
             </Typography>

@@ -2,6 +2,15 @@ import React, { Component } from 'react'
 import '../../../resources/bootstrap.min.css';
 import firebase from '../../../config/firebase.js'
 import Swal from 'sweetalert2';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import UserIcon from '@material-ui/icons/AccountCircle';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import Footer from '../../header-footer/Footer';
 
 class Users extends Component {
     constructor(props) {
@@ -13,6 +22,10 @@ class Users extends Component {
     }
     componentDidMount(){
     this.showData();
+  }
+  logout() {
+    sessionStorage.removeItem('user')
+    window.location.reload()
   }
 
   showData(){
@@ -68,7 +81,27 @@ class Users extends Component {
         const {displayUsers} = this.state;
         return (
             <div>
-                <div className="list-group" >
+                <AppBar style={{ background: '#3c3c3c'}} position="fixed">
+                    <Toolbar>
+                        <Typography component="h1" variant="h6" color="inherit" >
+                         <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/adminDashboard'}>
+                            <ArrowBack />   
+                         </IconButton>&nbsp;&nbsp; Admin Dashboard || Users
+                         </Typography>
+                        <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
+                            <Button style={{ color: 'white' }} onClick={() => window.location.href = '/adminDashboard'}>Home</Button>
+                            <IconButton color="inherit" title="Profile">
+                                <UserIcon />
+                            </IconButton>
+                            <Button style={{ color: 'white' }} onClick={() => this.logout()} >Logout</Button>
+
+
+                        </div>
+
+                    </Toolbar>
+                </AppBar>
+           <h1 className="font_righteous" style={{textAlign:'center',color:'black',marginTop:'100px'}}>All Registered Users</h1><br/>
+                <div className="list-group">
                             <button type="button" className="list-group-item list-group-item-action" style={{backgroundColor:'gray' , color:'white' , fontStyle:'bold'}} >
                                 <div className="form-row" style={{marginRight:'100px'}}>
                                 <div className="col">
@@ -87,10 +120,7 @@ class Users extends Component {
                                 
                             </button>
             
-                            </div>
-
-                
-               
+                            </div>  
 
                 {
                     displayUsers.map((val , ind )=>{
@@ -124,7 +154,7 @@ class Users extends Component {
                     })
                 }
 
-
+<Footer/>
 
             </div>
         )

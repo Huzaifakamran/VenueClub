@@ -844,7 +844,7 @@ class SearchResult extends Component {
                                             style={{ marginTop: 20 }}
                                             title={v.hallName}
                                             hoverable
-                                            cover={<img alt="example" style={{ height: 260 }} src={'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQefCoQ8XaDsgV3HdlAjqap7esgqwmqB-Xd5AIL9STJIbsjFfII'} />}
+                                            cover={<img alt="example" style={{ height: 260 }} src={`${v.picture[0]}`} />}
                                         >
                                             <Meta title={`VenueType: ${v.venueType}`} />
                                             <br />

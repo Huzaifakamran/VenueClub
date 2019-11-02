@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -135,7 +134,7 @@ export default function Dashboard() {
           </IconButton>
          
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-          <Link> <DotsIcon id="dot_icon" onClick={handleDrawerClose} style={{ color: 'white' }} /></Link>
+          <Link> <DotsIcon id="dot_icon" onClick={handleDrawerClose} style={{ color: 'white',float:'left' }} /></Link>
             &nbsp;
            Admin Dashboard
           </Typography>
