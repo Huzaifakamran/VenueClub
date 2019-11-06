@@ -326,16 +326,27 @@ render() {
                         </Typography>
                         <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
                             {user ? <div>
-                                <Button style={{ color: 'white' }} onClick={() => window.location.href = '/OwnerDashboard'} >Home</Button>
-                                <Button style={{ color: 'white' }} onClick={() => window.location.href = '/editVenue'} >Edit Venue</Button>
-                                <Button style={{ color: 'white' }} onClick={() => this.logout()}>Logout</Button>
-
-                                <Button style={{ color: 'white' }}>
-                                    {user.fName}
-                                    <IconButton color="inherit" title="Profile">
-                                        <UserIcon />
-                                    </IconButton>
-                                </Button>
+                               
+                                {/* <Button style={{ color: 'white' }} onClick={() => window.location.href = '/editVenue'} >Edit Venue</Button> */}
+                                <div className="dropdown"  style={{marginLeft:980}}>
+                                    <button className="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Profile
+                                    <span className="caret"></span></button>
+                                    <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                                    <br/>
+                                    <li>{user.fName}</li><hr style={{backgroundColor:'#ffffff'}}/>
+                                    
+                                    <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
+                                    <br/>
+                                    <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
+                                    <br/>
+                                    <li><a onClick={() => window.location.href = '/editVenue'}>Edit Venue</a></li>
+                                    <br/>
+                                    <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>
+                                    <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                                    <li><a onClick={()=>this.logout()}>Logout</a></li>
+                                    <br/>
+                                    </ul>
+                                </div>
                             </div>
                                 : <div>
                                     <Button style={{ color: 'white' }} onClick={() => window.location.href = '/privacyPolicy'}>

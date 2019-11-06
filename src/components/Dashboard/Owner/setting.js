@@ -11,6 +11,7 @@ import UserIcon from '@material-ui/icons/AccountCircle';
 import { Button } from '@material-ui/core';
 import RegisterIcon from '@material-ui/icons/AddCircle'
 import Message from '@material-ui/icons/Message';
+import SearchByEmail from '../../SearchByEmail';
 import { Link } from 'react-router-dom';
 import firebase from '../../../config/firebase'
 import swal from 'sweetalert';
@@ -104,27 +105,38 @@ class Register extends Component {
     const { user, newPassword, confirm } = this.state
     return (
       <div>
-        <AppBar style={{ background: '#3c3c3c',marginTop: -100 }} position="absolute">
-          <Toolbar>
-            <Typography component="h1" variant="h6" color="inherit" >
-            <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
-               <ArrowBack />   
-             </IconButton>&nbsp;&nbsp;Owner Dashboard || Setting
-          </Typography>
-            <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
-                <Button style={{ color: 'white' }}>Home</Button>
-                  <IconButton color="inherit" title="Profile">
-                <UserIcon />
-              </IconButton>
-              <Button style={{ color: 'white' }} onClick={() => this.logout()}>Logout</Button>
-            </div>
-
-          </Toolbar>
-        </AppBar>
+         <nav className="navbar navbar-expand-lg navbar-light bck_black fixed-top">
+         <IconButton style={{color:'white'}} color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
+                            <ArrowBack />   
+                         </IconButton>
+               <img style={{ width: '90px', height: '90px' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+               <div className="header_logo">
+              
+                   <div className="font_righteous header_logo_venue" style={{ color: 'white', fontSize: '30px' }}>Venue Club</div>
+                   <div className="header_logo_title" style={{ color: 'white' }}>Design Your Perfect Event</div>
+               </div>
+               <div className="dropdown" style={{marginLeft:980}}>
+                    <button className="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Profile
+                    <span className="caret"></span></button>
+                    <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                      <br/>
+                      <li>{user.fName}</li><hr style={{backgroundColor:'#ffffff'}}/>
+                      
+                      <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>
+                  <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                      <li><a onClick={() => this.logout()}>Logout</a></li>
+                      <br/>
+                    </ul>
+                  </div>
+               </nav>
 
         <div>
 
-<div style={{ marginTop: '100px', marginBottom: '10px', marginLeft: '25%', marginRight: '25%', borderStyle: 'ridge', borderWidth: '1px' }}>
+<div style={{ marginTop: '150px', marginBottom: '10px', marginLeft: '25%', marginRight: '25%', borderStyle: 'ridge', borderWidth: '1px' }}>
   <div style={{ marginLeft: '40px', marginRight: '40px', marginTop: '40px', marginBottom: '40px' }}> <h2>Edit contact information</h2><hr />
     <div className="form-row mt-3">
       <div className="col">
@@ -207,7 +219,8 @@ class Register extends Component {
   </div>
 </div>
 
-</div>
+</div><hr/>
+        <SearchByEmail/>
         <Footer />
       </div>
 

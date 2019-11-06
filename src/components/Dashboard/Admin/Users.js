@@ -43,9 +43,6 @@ class Users extends Component {
         
         displayUsers.push(obj)
         this.setState({displayUsers})
-        //   childSnapshot.forEach((a)=>{
-        //     console.log('2' , a.val()) 
-        //   })
       })
     })
   }

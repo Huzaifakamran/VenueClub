@@ -17,10 +17,12 @@ class Register extends Component {
         address: '',
         capacity: '',
         price: '',
-        picture: '',
+        picture: [],
         venueLocation: '',
-        venueType: ''
-      }
+        venueType: '',
+        description: ''
+      },
+      pictureUrl: []
     }
   }
 
@@ -33,7 +35,6 @@ class Register extends Component {
   }
 
   updateData(e) {
-    console.log(e)
     const { name, value } = e
     this.setState({
       data: {
@@ -48,13 +49,13 @@ class Register extends Component {
     this.setState({
       data: {
         ...this.state.data,
-        [name]: files[0]
+        [name]: files
       }
     })
   }
 
   async addData() {
-    const { data, user } = this.state
+    var { data, user, pictureUrl } = this.state
     // // Update progress bar
     // task.on('state_changed', (snapshot) => {
     //     var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -77,38 +78,45 @@ class Register extends Component {
     // .catch((err) => {
     //   console.log(err)
     // })
-    if (data.hallName === '' || data.address === '' || data.capacity === '' || data.price === '' || data.picture === '' || data.venueLocation === '' || data.venueType === '') {
+    if (data.hallName === '' || data.address === '' || data.capacity === '' || data.price === '' || data.picture.length === 0 || data.venueLocation === '' || data.venueType === '' || data.description === '') {
       swal('Fill All textfield(s)')
     }
     else {
       this.setState({ disable: true })
-      var storageRef = firebase.storage().ref(`${user.uid}/${data.picture.name}`)
-      await storageRef.put(data.picture);
-      storageRef.getDownloadURL()
-        .then((url) => {
-          console.log(url)
-          data.picture = url
-          firebase.database().ref('allHallData').child(`${user.uid}`).push(data)
-          // firebase.database().ref('users').child(`${user.uid}/hallData`).push(data)
-            .then(() => {
-              this.setState({
-                data: {
-                  hallName: '',
-                  address: '',
-                  capacity: '',
-                  price: '',
-                  picture: '',
-                  venueLocation: '',
-                  venueType: ''
-                },
-                disable: false
-              })
-            })
+
+      firebase.database().ref('allHallData').child(`${user.uid}`).push(data)
+        .then(async (snap) => {
+          for (var i = 0; i < data.picture.length; i++) {
+            var storageRef = firebase.storage().ref(`${user.uid}/${snap.key}/${data.picture[i].name}`)
+            await storageRef.put(data.picture[i])
+            storageRef.getDownloadURL()
+              .then((url) => {
+                console.log(url)
+                pictureUrl.push(url)
+                firebase.database().ref('allHallData').child(`${user.uid}/${snap.key}/picture/`).set(pictureUrl) })
+          }
         })
-        .catch((err) => {
-          console.log(err)
+        .then(() => {
+          // window.location.reload()
+          this.setState({
+            data: {
+              hallName: '',
+              address: '',
+              capacity: '',
+              price: '',
+              picture: [],
+              venueLocation: '',
+              venueType: '',
+              
+            },
+            disable: false
+          })
+          window.location.href="/OwnerDashboard"
+          
         })
+
     }
+    
   }
 
 
@@ -129,6 +137,11 @@ class Register extends Component {
           <div className="form-group">
             <label for="inputAddress" style={{ float: 'left' }}>Address</label>
             <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" name="address" value={data.address} onChange={(e) => this.updateData(e.target)} />
+          </div>
+
+          <div className="form-group">
+            <label for="inputAddress" style={{ float: 'left' }}>Description</label>
+            <textarea type="text" className="form-control" placeholder="Lorem Ipsum...!" name="description" value={data.description} onChange={(e) => this.updateData(e.target)} />
           </div>
 
           <div className="form-row">
@@ -155,7 +168,6 @@ class Register extends Component {
                 <option value="">Select Venue Type</option>
                 <option value="hall">Hall</option>
                 <option value="banquet">Banquet</option>
-                <option value="other">Other</option>
               </select>
             </div>
 
@@ -173,7 +185,6 @@ class Register extends Component {
                 <option value="nazimabad">Nazimabad</option>
                 <option value="north nazimabad">North Nazimabad</option>
                 <option value="defense">Defense</option>
-                <option value="other">Other</option>
               </select>
             </div>
           </div>
@@ -182,7 +193,7 @@ class Register extends Component {
 
           <div className="form-group">
             <label for="exampleFormControlFile1" style={{ float: 'left' }}>Upload hall images</label>
-            <input type="file" accept="image/*" className="form-control-file" id="exampleFormControlFile1" name="picture" onChange={(e) => this.updateFile(e.target)} />
+            <input type="file" accept="image/*" multiple className="form-control-file" id="exampleFormControlFile1" name="picture" onChange={(e) => this.updateFile(e.target)} />
           </div>
 
           <br />

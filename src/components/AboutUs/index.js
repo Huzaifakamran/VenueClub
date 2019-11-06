@@ -44,8 +44,8 @@ class AboutUS extends Component {
                     </div>
                     <ul className="social">
                       <li><a href={'https://www.facebook.com/majid.arif.1466'} className="fa fa-facebook"></a> </li>
-                      <li><a href="" className="fa fa-twitter"></a> </li>            
-                      <li><a href="" className="fa fa-linkedin"></a> </li>
+                      <li><a href={'https://twitter.com/Majid5Nawaz'} className="fa fa-twitter"></a> </li>            
+                      <li><a href={'https://www.linkedin.com/in/majid-nawaz-7bb175132/'} className="fa fa-linkedin"></a> </li>
                     </ul>
                     </Flip>
                   </div>

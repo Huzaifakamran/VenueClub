@@ -21,6 +21,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import { mainListItems , secondaryListItems } from './listItems';
 import { Link } from 'react-router-dom';
 import DotsIcon from '@material-ui/icons/MoreVert';
+import { Button } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -139,7 +140,7 @@ export default function Dashboard() {
            Admin Dashboard
           </Typography>
 
-
+          <Button style={{ color: 'white' }} onClick={() => window.location.reload()}>Home</Button>
         
           <IconButton color="inherit" title="Profile">
           <UserIcon/>

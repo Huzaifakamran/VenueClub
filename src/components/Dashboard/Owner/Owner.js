@@ -105,19 +105,18 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 500,
+    height: 550,
   },
 }));
 
-function logout() {
-  sessionStorage.removeItem('user')
-  window.location.reload()
-}
 function viewVenue(v) {
   sessionStorage.setItem('view', JSON.stringify(v))
   window.location.href = '/myVenueView'
 }
-
+function logout(){
+  sessionStorage.removeItem('user')
+  window.location.reload()
+}
 export default function Dashboard(props) {
 
 
@@ -159,29 +158,23 @@ export default function Dashboard(props) {
             &nbsp;
              Owner Dashboard
             </Typography>
-          {/* <Button style={{ color: 'white' }}>Browse Venue</Button>
-          <Button style={{ color: 'white' }}>Manage Venues</Button> */}
-          {/*H <Button style={{ color: 'white' }} onClick={() => logout()}>Logout</Button> */}
-
-          <Button style={{ color: 'white' }} onClick={() => window.location.reload()}>Home</Button>
-
-          <Link to="OwnerDashboard/chat">
-            <IconButton style={{ color: '#ffffff' }} title="Message">
-              <Message />
-            </IconButton>
-          </Link>
-
-          <Link to="/RegisterHall">
-            <IconButton style={{ color: '#ffffff' }} title="Register Hall">
-              <RegisterIcon />
-            </IconButton>
-          </Link>
-
-
-          <IconButton color="inherit" title="Profile">
-            <Button style={{ color: 'white' }} >{props.user.fName}</Button>
-            <UserIcon />
-          </IconButton>
+            <div className="dropdown">
+                <button className="btn btn-success dropdown-toggle" style={{marginRight:60}} type="button" data-toggle="dropdown">Profile
+                <span className="caret"></span></button>
+                <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                  <br/>
+                  <li>{props.user.fName}</li><hr style={{backgroundColor:'#ffffff'}}/>
+                  
+                  <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>
+                  <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                  <li><a onClick={logout}>Logout</a></li>
+                  <br/>
+                </ul>
+              </div>
 
 
         </Toolbar>
@@ -214,8 +207,8 @@ export default function Dashboard(props) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={9}>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={12} lg={12}>
               <Paper className={fixedHeightPaper}>
 
                 {props.hallDataArr.length && props.isData ? <div style={{ background: '#ECECEC', padding: '30px' }}>
@@ -238,14 +231,14 @@ export default function Dashboard(props) {
                   <Pagination
                     style={{ textAlign: 'right' }}
                     defaultCurrent={1}
-                    defaultPageSize={3} //default size of page
-                    // onChange={this.handleChange}
+                    defaultPageSize={3} 
+                    
                     onChange={(e) => props.updatePage(e)}
                     total={props.hallDataArr.length} //total number of card data available
                   />
-                </div> : !props.isData ? <center><Btn type="primary" style={{ textAlign: 'center', marginTop: 200, fontSize: 28, height: 50, width: 200 }} onClick={() => window.location.href = "/RegisterHall"}>
+                </div> : !props.isData ? <center><button className="btn btn-success" type="primary" style={{ textAlign: 'center', marginTop: 200, fontSize: 28, height: 50, width: 200 }} onClick={() => window.location.href = "/RegisterHall"}>
                   Add Venue
-                </Btn></center>
+                </button></center>
                     : <Skeleton />}
               </Paper>
             </Grid>

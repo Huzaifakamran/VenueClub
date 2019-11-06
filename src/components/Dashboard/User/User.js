@@ -42,7 +42,7 @@ const columns = [
     dataIndex: 'pDate',
   },
   {
-    title: 'Statue',
+    title: 'Status',
     dataIndex: 'status'
   }
 ]
@@ -178,31 +178,36 @@ export default function Dashboard(props) {
             &nbsp;
              User Dashboard
             </Typography>
-            <Button style={{ color: 'white' }} onClick={() => window.location.reload()}>Home</Button>
-           
-            <IconButton onClick={() => window.location.href = '/user/chat'} style={{ color: '#ffffff' }} title="Message">
-            <Message />
-          </IconButton>
-           
+             <div className="dropdown">
+                <button className="btn btn-success dropdown-toggle" style={{marginRight:60}} type="button" data-toggle="dropdown">Profile
+                <span className="caret"></span></button>
+                <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                  <br/>
+                  <li>{props.user.fName}</li><hr style={{backgroundColor:'#ffffff'}}/>
+                  
+                  <li><a onClick={() => window.location.href='/userDashboard'}>Home</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/user/chat'}>Message</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/userDashboard/setting'}>Setting</a></li>
+                  <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                  <li><a onClick={logout}>Logout</a></li>
+                  <br/>
+                </ul>
+              </div>
+          
 
-          {/* <Link to="/RegisterHall">
-            <IconButton style={{ color: '#ffffff' }} title="Register Hall">
-              <RegisterIcon />
-            </IconButton>
-          </Link> */}
-
-
-          <IconButton className="dropdown" color="inherit" title="Profile" style={{paddingRight:'50px'}}>
-          {/* <Button style={{ color: 'white' }} >{props.user.fName}</Button> */}
-            <UserIcon className="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        
+        
+            {/* <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+             <Button style={{ color: 'white' }} >{props.user.fName}</Button>
               <button class="dropdown-item" type="button">Action</button>
               <button class="dropdown-item" type="button">Another action</button>
               <button class="dropdown-item" type="button">Something else here</button>
-            </div>
+            </div> */}
           
           
-          </IconButton>
+         
           
 
         </Toolbar>
@@ -242,12 +247,12 @@ export default function Dashboard(props) {
           columns={columns}
           dataSource={props.data.slice().reverse()}
         />
-       </div> /*: !props.isData ? <div style={{ width: '100%', justifyContent: 'center', textAlign: 'center', marginTop: 140 }}>
+       </div> : !props.isData ? <div style={{ width: '100%', justifyContent: 'center', textAlign: 'center', marginTop: 140 }}>
        <h1 className="font_righteous"> Welcome to the user dashboard</h1>
        <img style={{width:'50%', height: '70%' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/><br/><br/>
        <button type="button" className="btn btn-success" style={{padding:'10px 10px'}} onClick={()=>window.location.href='/searchResult'}>Search Venue &nbsp;<SearchIcon/></button>
             
-      </div>*/
+      </div>
       
       : <Skeleton />} 
      </div>

@@ -92,7 +92,7 @@ class OwnerBooking extends Component {
 
             firebase.database().ref('users').child(`${user.uid}/chatList/${modalData.customerUid}`).set(modalData.name)
             firebase.database().ref('users').child(`${modalData.customerUid}/chatList/${user.uid}`).set(user.fName)
-            firebase.database().ref('allHallData').child(`${user.uid}/${modalData.hallData.key}/bookings`).set({ [modalData.customerUid]: 1 })
+            firebase.database().ref('allHallData').child(`${user.uid}/${modalData.hallData.key}/bookings`).set({ bookID : modalData.customerUid })
 
             firebase.database().ref('users').child(`${user.uid}/recBooking/${modalData.key}`).update({ status: "Approved" })
             firebase.database().ref('users').child(`${modalData.customerUid}/sentBooking/${modalData.key}`).update({ status: "Approved" })
@@ -151,7 +151,7 @@ class OwnerBooking extends Component {
 
 
     render() {
-        const { visible, confirmLoading, columns, data, modalData } = this.state
+        const { visible, confirmLoading, columns, data, modalData,user } = this.state
 
         return (
             <div>
@@ -160,34 +160,32 @@ class OwnerBooking extends Component {
                         <Typography component="h1" variant="h6" color="inherit" >
                             <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
                                 <ArrowBack />
-                            </IconButton>&nbsp;&nbsp; Owner Dashboard || Booking Requests
+                            </IconButton>&nbsp;&nbsp; Venue Club
                          </Typography>
-                        <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
-                            <Button style={{ color: 'white' }} onClick={() => window.location.href = '/ownerDashboard'}>Home</Button>
-
-                            <IconButton style={{ color: '#ffffff' }} title="Message">
-                                <Message />
-                            </IconButton>
-
-                            <Link to="/RegisterHall">
-                                <IconButton style={{ color: '#ffffff' }} title="Register Hall">
-                                    <RegisterIcon />
-                                </IconButton>
-                            </Link>
-
-
-                            <IconButton color="inherit" title="Profile">
-                                <UserIcon />
-                            </IconButton>
-                            <Button style={{ color: 'white' }} onClick={() => this.logout()} >Logout</Button>
-
-
-                        </div>
+                        <div className="dropdown"  style={{marginLeft:980}}>
+                <button className="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Profile
+                <span className="caret"></span></button>
+                <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                  <br/>
+                  <li>{user.fName}</li><hr style={{backgroundColor:'#ffffff'}}/>
+                  
+                  <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>
+                  <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                  <li><a onClick={()=>this.logout()}>Logout</a></li>
+                  <br/>
+                </ul>
+              </div>
 
                     </Toolbar>
                 </AppBar>
-
-                <div style={{ width: '100%', justifyContent: 'center', display: 'flex', textAlign: 'center', marginTop: 140 }}>
+                <h1 className="font_righteous" style={{color:'green',textAlign:'center', marginTop: 140}}>Booking Requests</h1>
+                   <br/>
+                <div style={{ width: '100%', justifyContent: 'center', display: 'flex', textAlign: 'center' }}>
+             
                     {data.length ? <Table
                         style={{ width: '94%' }}
                         columns={columns}

@@ -5,7 +5,8 @@ import { scroller } from 'react-scroll';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 // import $ from 'jquery';
 import firebase from '../../config/firebase';
-import swal from 'sweetalert'
+import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 class Header extends Component {
 
@@ -75,10 +76,17 @@ class Header extends Component {
             await firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((res) => {
                     if(email == "huzaifakamran@admin.com"){
-                        swal('login successfull')
-                        window.location.href ='/AdminDashboard'
-                        sessionStorage.setItem('user', 'admin')
-                    }
+                        swal({
+                            title: "Login Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.location.href ='/AdminDashboard'
+                                sessionStorage.setItem('user', 'admin')
+                              }
+                          })
+                        }
+                        
                     else{
 
                     
@@ -88,16 +96,23 @@ class Header extends Component {
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
-                        swal('login successfull')
-                        window.$('#exampleModalCenter').modal('hide');
-                        console.log("Hello")
+                        swal({
+                            title: "Login Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#exampleModalCenter').modal('hide');
+                                console.log("Hello")
+                               
+                                 if (val1.accountType === "1") {
+                                    window.location.href = '/userDashboard'
+                                }
+                                else {
+                                    window.location.href = '/OwnerDashboard'
+                                }
+                            }
+                        })
                        
-                         if (val1.accountType === "1") {
-                            window.location.href = '/userDashboard'
-                        }
-                        else {
-                            window.location.href = '/OwnerDashboard'
-                        }
                     })
                  }
                     this.setState({
@@ -151,7 +166,10 @@ class Header extends Component {
                         .then(() => {
                             sessionStorage.setItem('user', JSON.stringify(obj))
                             this.setState({ obj: obj1, disable: false })
-                            swal('Signup successfull');
+                            swal({
+                                title: "Signup Successfully",
+                                icon: "success"
+                              })
                             window.$('#signupModalCenter').modal('hide');
                             window.location.href = '/OwnerDashboard'
                         })
@@ -188,9 +206,17 @@ class Header extends Component {
                     .then(() => {
                         sessionStorage.setItem('user', JSON.stringify(obj))
                         this.setState({ obj: obj1, disable: false })
-                        swal('Signup successfull');
-                        window.$('#signupModalCenter').modal('hide');
-                        window.location.href = '/userDashboard'
+                        
+                        swal({
+                            title: "Signup Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#signupModalCenter').modal('hide');
+                                window.location.href = '/userDashboard'
+                              }
+                            })
+                       
                     })
 
             })
@@ -287,9 +313,15 @@ class Header extends Component {
                     .then(() => {
                         sessionStorage.setItem('user', JSON.stringify(obj2))
                         this.setState({ obj2: obj1, disable: false })
-                        swal('Signup successfull');
-                        window.$('#AdditionalInfo').modal('hide');
-                        window.location.href = '/OwnerDashboard'
+                        swal({
+                            title: "Signup Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#AdditionalInfo').modal('hide');
+                                window.location.href = '/OwnerDashboard'
+                              }})
+                      
                     })
             }
         }
@@ -312,9 +344,15 @@ class Header extends Component {
                 .then(() => {
                     sessionStorage.setItem('user', JSON.stringify(obj2))
                     this.setState({ obj2: obj1, disable: false })
-                    swal('Signup successfull');
-                    window.$('#AdditionalInfo').modal('hide');
-                    window.location.href = '/userDashboard'
+                    swal({
+                        title: "Signup Successfully",
+                        icon: "success"
+                      }).then((okay) =>{
+                          if(okay){
+                            window.$('#AdditionalInfo').modal('hide');
+                            window.location.href = '/userDashboard'
+                          }})
+                 
                 })
         }
     }
@@ -349,14 +387,20 @@ class Header extends Component {
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
-                        swal('login successfull')
-                        window.$('#exampleModalCenter').modal('hide');
-                        if (val1.accountType === "1") {
-                            window.location.href = '/userDashboard'
-                        }
-                        else {
-                            window.location.href = '/OwnerDashboard'
-                        }
+                        swal({
+                            title: "login Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#exampleModalCenter').modal('hide');
+                                if (val1.accountType === "1") {
+                                    window.location.href = '/userDashboard'
+                                }
+                                else {
+                                    window.location.href = '/OwnerDashboard'
+                                }
+                              }})
+                      
                     })
                 }
             })
@@ -397,14 +441,20 @@ class Header extends Component {
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
-                        swal('login successfull')
-                        window.$('#exampleModalCenter').modal('hide');
-                        if (val1.accountType === "1") {
-                            window.location.href = '/userDashboard'
-                        }
-                        else {
-                            window.location.href = '/OwnerDashboard'
-                        }
+                        swal({
+                            title: "login Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#exampleModalCenter').modal('hide');
+                                if (val1.accountType === "1") {
+                                    window.location.href = '/userDashboard'
+                                }
+                                else {
+                                    window.location.href = '/OwnerDashboard'
+                                }
+                              }})
+                     
                     })
                 }
             })
@@ -437,12 +487,14 @@ class Header extends Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav head_ul" style={{ marginLeft: '25%' }}>
+                        <ul className="navbar-nav head_ul" style={{ marginLeft: '15%' }}>
                             <li>  <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('Home')}>HOME</button> </li>
                             <li>  <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('Categories')}>CATEGORIES</button></li>
                             <li>   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('AboutUs')}>ABOUT US</button></li>
                             <li>  <Link to="/PrivacyPolicy">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>PRIVACY POLICY</button></Link></li>
                             <li>  <Link to="/TermsAndCondition">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>TERMS & CONDITION</button></Link></li>
+                            <li>  <Link to="/PaymentMethod">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>PAYMENT METHOD</button></Link></li>
+                          
                             {!this.state.user ? <li>  <button type="button" style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} data-toggle="modal" data-target="#exampleModalCenter" >LOGIN / SIGNUP</button></li> :
                                 <li>  <button type="button" style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.logout()} >LOGOUT</button></li>}
                                 {/* <li>  <Link to="/AdminDashboard"><button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} >Admin</button></Link></li> */}

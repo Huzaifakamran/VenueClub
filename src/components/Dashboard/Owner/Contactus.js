@@ -50,33 +50,39 @@ var obj = {
  
 }}
 
+
 const FormPage = () => {
- 
+
   return (
       <div>
-           <AppBar style={{ background: '#3c3c3c' }} position="absolute">
-          <Toolbar>
-            <Typography component="h1" variant="h6" color="inherit" >
-            <IconButton color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
-                <ArrowBack />   
-           </IconButton>&nbsp;&nbsp;ContactUs Page
-          </Typography>
-            <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
-            <Button style={{ color: 'white' }} onClick={() => window.location.href='/ownerDashboard'}>Home</Button>
-           
-              <IconButton style={{ color: '#ffffff' }} title="Message" onClick={() => window.location.href = '/OwnerDashboard/chat'}>
-                <Message />
-              </IconButton>
-
-              <IconButton color="inherit" title="Profile" >
-                <UserIcon />
-              </IconButton>
-              <Button style={{ color: 'white' }} onClick={logout}>Logout</Button>
-          
-            </div>
-
-          </Toolbar>
-        </AppBar>
+            <nav className="navbar navbar-expand-lg navbar-light bck_black fixed-top">
+         <IconButton style={{color:'white'}} color="inherit" title="Back" onClick={() => window.location.href = '/OwnerDashboard'}>
+                            <ArrowBack />   
+                         </IconButton>
+               <img style={{ width: '90px', height: '90px' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+               <div className="header_logo">
+              
+                   <div className="font_righteous header_logo_venue" style={{ color: 'white', fontSize: '30px' }}>Venue Club</div>
+                   <div className="header_logo_title" style={{ color: 'white' }}>Design Your Perfect Event</div>
+               </div>
+                    <div className="dropdown" style={{marginLeft:980}}>
+                      <button className="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Profile
+                      <span className="caret"></span></button>
+                      <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                        <br/>
+                        
+                        
+                        <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
+                        <br/>
+                        <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
+                        <br/>
+                        <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>
+                        <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                        <li><a onClick={logout}>Logout</a></li>
+                        <br/>
+                      </ul>
+                    </div>
+               </nav>
 
     <MDBContainer>
       <MDBRow>

@@ -8,6 +8,7 @@ import { Button } from '@material-ui/core';
 import UserIcon from '@material-ui/icons/AccountCircle';
 import firebase from '../../../config/firebase.js';
 import '../../../resources/bootstrap.min.css';
+import '../../../resources/scrollbar.css';
 import img from '../../../resources/images/complaintsBackground.jpg';
 import Footer from '../../header-footer/Footer';
 import Swal from 'sweetalert2';
@@ -171,8 +172,10 @@ class Complaints extends Component {
                 <div className="card mt-5" style={{width:'100%'}}>
                   <h5 className="card-header">{val.fname}</h5>
                   <div className="card-body">
-                    <h5 className="card-title">{val.subject}</h5>
-                    <p className="card-text">{val.message}</p>
+                  <div className="scrollbar square scrollbar-lady-lips thin" style={{overflowY:'scroll' , height:'120px'}}>
+                <h5 className="card-title">{val.subject}</h5>
+                <p className="card-text">{val.message}</p>
+                </div>
                     <br/>
                     <div style={{textAlign:'center'}}>
                     <button className="btn btn-danger" onClick={(e)=>this.deleteHallOwnerRecord(ind)}>Delete</button> 
@@ -207,9 +210,11 @@ class Complaints extends Component {
               
               <div className="card mt-5" style={{width:'100%'}}>
               <h5 className="card-header">{val.fname}</h5>
-              <div className="card-body">
+              <div className="card-body" >
+                <div className="scrollbar square scrollbar-lady-lips thin" style={{overflowY:'scroll' , height:'120px'}}>
                 <h5 className="card-title">{val.subject}</h5>
                 <p className="card-text">{val.message}</p>
+                </div>
                 <br/>
                 <div style={{textAlign:'center'}}>
                 <button className="btn btn-danger" onClick={(e)=>this.deleteUserRecord(ind)}>Delete</button>  

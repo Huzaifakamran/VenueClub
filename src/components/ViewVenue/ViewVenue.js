@@ -22,6 +22,8 @@ import { Card, Skeleton, Table, Button as Btn, Form, Modal, Input, DatePicker } 
 import swal from 'sweetalert';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import './style.css'
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import SearchByEmail from '../SearchByEmail';
 
 const { Meta } = Card
 
@@ -575,24 +577,31 @@ class ViewVenue extends Component {
                     <AppBar style={{ background: '#3c3c3c' }} position="fixed">
                         <Toolbar>
                             <Typography component="h1" variant="h6" color="inherit" >
+                            <IconButton color="inherit" title="Back" onClick={()=> window.location.href='/searchResult'}>
+                            <ArrowBack />   
+                            </IconButton>
+                               &nbsp;
                                 {user ? "User Dashboard" : "Venue Club"}
                             </Typography>
                             <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
                                 {user ? <div>
-                                    <Button style={{ color: 'white' }} onClick={() => window.location.href = '/userDashboard'} >Home</Button>
-                                    {/* <Button style={{ color: 'white' }}>Manage Venues</Button> */}
-                                    <Button style={{ color: 'white' }} onClick={() => this.logout()}>Logout</Button>
-
-                                    {/* <IconButton style={{ color: '#ffffff' }} title="Message">
-                                    <Message />
-                                </IconButton> */}
-
-                                    <Button style={{ color: 'white' }}>
-                                        {user.fName}
-                                        <IconButton color="inherit" title="Profile">
-                                            <UserIcon />
-                                        </IconButton>
-                                    </Button>
+                                    <div className="dropdown">
+                                        <button className="btn btn-success dropdown-toggle" style={{marginRight:60}} type="button" data-toggle="dropdown">Profile
+                                        <span className="caret"></span></button>
+                                        <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                                            <br/>
+                                            <li>{user.fName}</li><hr style={{backgroundColor:'#ffffff'}}/>
+                                            
+                                            <li><a onClick={() => window.location.href='/userDashboard'}>Home</a></li>
+                                            <br/>
+                                            <li><a onClick={() => window.location.href='/user/chat'}>Message</a></li>
+                                            <br/>
+                                            <li><a onClick={() => window.location.href='/userDashboard/setting'}>Setting</a></li>
+                                            <br/><hr style={{backgroundColor:'#ffffff'}}/>
+                                            <li><a onClick={() => this.logout()}>Logout</a></li>
+                                            <br/>
+                                        </ul>
+                                        </div>
                                 </div>
                                     : <div>
                                         <Button style={{ color: 'white' }} onClick={() => window.location.href = '/privacyPolicy'}>
@@ -826,10 +835,21 @@ class ViewVenue extends Component {
                         </Toolbar>
                     </AppBar>
 
+                    <div className="viewContainer">
+                        <img style={{height:'500px',width:'100%',filter:'blur(2px)',WebkitFilter:'blur(2px)'}} src={`${view.picture[0]}`}/>
+                        <div className="viewText font_righteous">
+                        <h4 style={{color:'white'}}>{view.hallName}</h4>
+                        <p>{view.address}</p>
+                        </div>
+                           
+                        </div>
+                        
+                        
+
                 </Element>
 
                 {userData ? <div>
-                    <div style={{ display: 'flex', flexDirection: 'row', marginTop: 45, marginBottom: 10, flex: 1 }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', marginTop: 45, marginBottom: 10, flex: 1,marginLeft:'2%',marginRight:'2%' }}>
                         <div className="slider" style={{ flex: 5, marginRight: 10, marginTop: 50 }} >
 
                             <div className="slider-wrapper"
@@ -852,31 +872,36 @@ class ViewVenue extends Component {
                                 goToNextSlide={this.goToNextSlide}
                             />
                         </div>
-                        <div style={{ flex: 3, marginRight: 10 }}>
+                        <div style={{ flex: 3, marginRight: 10}}>
                             <Table pagination={false} dataSource={data} style={{ display: 'inline', width: '30%' }}>
                                 <Column title="" dataIndex="name" key="firstName" />
                                 <Column title="" dataIndex="value" key="lastName" />
-                            </Table>
+                            </Table><br/>
+                            <button type="primary" className="btn btn-success" onClick={() => this.venueBooking()} block>
+                                Register this Venue
+                                        </button>
                         </div>
-                    </div>
-                    <div style={{ display: 'flex', flex: 1, flexDirection: 'row', marginRight: 10, marginLeft: 10 }}>
-                        <div style={{ flex: 3 }}>
-                            <div className="card1" onClick={() => this.setState({ showDescription: !showDescription })}>
-                                <p className="title"><i className="fa fa-list-ul"></i> &nbsp; Description</p>
+                        
+                    </div><hr/>
+                    <div style={{  marginRight: 10, marginLeft: 10 }}>
+                        <div style={{width:'62%'}}>
+                            <div className="card1" style={{borderStyle:'dotted solid' }} onClick={() => this.setState({ showDescription: !showDescription })}>
+                                <p className="title mt-3" ><i className="fa fa-list-ul"></i> &nbsp; Description</p>
                             </div>
                             {showDescription && <div className="card2">
                                 <p className="title">{view.description}
                                 </p>
                             </div>}
                         </div>
-                        <div style={{ flex: 1, marginTop: 50, marginLeft: 10 }}>
+                        {/* <div style={{ flex: 1, marginTop: 50, marginLeft: 10 }}>
                             <Btn type="primary" onClick={() => this.venueBooking()} block>
                                 Register this Venue
                                         </Btn>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
-                    : <div style={{ marginTop: 85 }}><Skeleton /></div>}
+                    : <div style={{ marginTop: 85 }}><Skeleton /></div>}<br/><hr/>
+                    <SearchByEmail/>
                 < Footer />
 
                 <Modal

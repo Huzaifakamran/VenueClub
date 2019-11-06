@@ -28,7 +28,7 @@ import AdminRegisteredHalls from './components/Dashboard/Admin/RegisteredHalls';
 import AdminUsers from './components/Dashboard/Admin/Users';
 import AdminBookings from './components/Dashboard/Admin/Bookings';
 import Complaints from './components/Dashboard/Admin/Complaints';
-
+import Payment from './components/Payment/index';
 
 function PrivateRoute({ component: Component, isLoggedIn, ...rest }) {
   return (
@@ -97,6 +97,7 @@ class App extends Component {
           <Route exact path="/OwnerDashboard/Card" component={Card} />
           <Route exact path="/HallDetails" component={HallDetails} />
            <Route exact path="/viewVenue" component={ViewVenue} />  
+           <Route exact path="/PaymentMethod" component={Payment} />  
 
 
 

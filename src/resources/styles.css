@@ -1,3 +1,51 @@
+/*=======================
+Social Icons
+========================*/
+*{
+    padding: 0px;
+    margin: 0px;
+  }
+.left-sidebar{
+    position: fixed;
+    top: 40%;
+    z-index: 999;
+   }
+   .left-sidebar ul{
+     border: none;
+   }
+   .left-sidebar i.fa{
+     padding: 8px;
+     font-size: 25px;
+     color:#fff;
+   }
+   .left-sidebar li{
+    width:80px;
+     padding: 5px;
+  
+     position: relative;
+     transition: .6s;
+   }
+   .left-sidebar li i{
+     font-size: 40px;
+   }
+   .left-sidebar li:nth-child(1){
+     background: #3b5999;
+   }
+   .left-sidebar li:nth-child(2){
+     background: #25D366;
+   }
+   .left-sidebar li:nth-child(3){
+     background: #55acee;
+   }
+   .left-sidebar li:nth-child(4){
+     background: #cd201f;
+   }
+   .left-sidebar li:hover{
+     width:150px
+   }
+/*=======================
+Home
+========================*/
 
 body {
     padding:0;
@@ -254,7 +302,7 @@ footer .footer_copyright {
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    top: 60%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);

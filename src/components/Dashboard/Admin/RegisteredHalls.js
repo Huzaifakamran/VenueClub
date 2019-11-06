@@ -8,7 +8,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import { Button } from '@material-ui/core';
 import firebase from '../../../config/firebase';
 import '../../../resources/bootstrap.min.css';
-import Card from './Card/index';
+import '../../../resources/scrollbar.css';
 
 class RegisteredHalls extends Component {
     constructor(props) {
@@ -72,34 +72,68 @@ class RegisteredHalls extends Component {
 
                     </Toolbar>
                 </AppBar>
-
+                
+                  <div className="form-row">
     { displayHalls.map((val, ind) =>{
          return(
- 
-         <div className="card-deck" style={{marginTop:'100px',width:'30%'}}>
+            <div class="col-sm-4">
+                 <div className="card-deck" style={{marginTop:'100px'}}>
             <div className="card">
-             {  Picture[ind].map((val1 , ind1)=>{
-                //   var a = ''+ind1;    
-                 return(
-                <img  src={Picture[ind][ind1]} style={{width:'100px' , height:'100px'}} />
-                ) 
-             })
-            }
+            <div >
+                <img style={{width:'100%',height:'300px'}} src={Picture[ind][0]}></img></div>
+            
             <div className="card-body">
                 <h5 className="card-title">{val.HallName}</h5>
-                <p className="card-text">{val.Desc}</p>
+                <div className="scrollbar square scrollbar-lady-lips thin" style={{overflowY:'scroll' , height:'120px'}}>
+               
+                <p className="card-text">{val.Desc}</p></div>
                 </div>
                 <div className="card-footer">
                 <small className="text-muted">Last updated 3 mins ago</small>
                 </div>
             </div>
             
-            </div>
+            </div></div>
             
             )}
         )
     
 }
+</div>
+
+{/* 
+<div style={{ background: '#ECECEC', padding: '30px' }}>
+                            <Row gutter={16}>
+                                {displayHalls.map((v, i) => {
+                                    return <Col span={8} key={i}>
+                                        <Card
+                                            style={{ marginTop: 20 }}
+                                            title={v.hallName}
+                                            hoverable
+                                            // cover={<img alt="example" style={{ height: 260 }} src={`${v.picture[0]}`} />}
+                                        >
+                                            <Meta title={`VenueType: ${v.venueType}`} />
+                                            <br />
+                                            <h3>Name: {v.HallName}</h3>
+                                            <h1>Capacity:{v.Capacity}</h1>
+                                            <p>Address: {v.Address}</p>
+                                            <p>Price: {v.Price}</p>
+                                            <p>Description: {v.Desc}</p>
+                                            <Btn type="primary" onClick={() => this.venueBooking(v)} block>
+                                                Register
+                                        </Btn>
+                                            <Btn type="secondary" style={{ marginTop: 10 }} onClick={() => this.viewVenue(v)} block>
+                                                View Venue
+                                        </Btn>
+                                        </Card>
+                                    </Col>
+                                })}
+                            </Row>
+                        </div> */}
+
+
+
+
 </div>
         )
     }
