@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -7,58 +7,74 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
+import firebase from '../../../config/firebase';
 
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
+class Order extends Component{
+  constructor(props) {
+    super(props)
+    this.state = {
+      user: JSON.parse(sessionStorage.getItem('user')),
+      displayOrders:[],
+    
 
-const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
-];
+    }}
+    componentWillMount(){
+      this.showData();
+    }
+    showData() {
+      const { displayOrders,user } = this.state
+      firebase.database().ref('users').child(`${user.uid}/recBooking`).on('child_added', (snapshot) => {
+        snapshot.forEach((val) =>{
 
-const useStyles = makeStyles(theme => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
-  },
-}));
+        
+        var value = val.val()
+        value['key'] = val.key
+        displayOrders.push({
+            key: val.key,
+            name: value,
+            hallName: value.hallName,
+            pDate: value['date-time-picker'],
+            status: value.status
+         } )});
+        this.setState({ displayOrders })
+    })
+  }
+render(){
+  const {user ,displayOrders} = this.state;
 
-export default function Orders() {
-  const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Recent Bookings</Title>
+      <Title>Bookings Request</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
+            <TableCell>Customer Name</TableCell>
+            <TableCell>Hall Name</TableCell>
             <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+           
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+
+           {displayOrders.map((val,ind) => {
+             return(
+            <TableRow>
+              <TableCell>{val.name}</TableCell>
+              <TableCell>{val.hallName}</TableCell>
+              <TableCell>{val.pDate}</TableCell>
+           
             </TableRow>
-          ))}
+            ) })} 
         </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="javascript:;">
+      
+        <Link color="primary" style={{color:'green'}} onClick={()=> window.location.href='/OwnerDashboard/booking'}>
           See more orders
         </Link>
-      </div>
+      
     </React.Fragment>
   );
 }
+}
+export default Order

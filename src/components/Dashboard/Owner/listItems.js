@@ -71,20 +71,7 @@ export const mainListItems = (
 export const secondaryListItems = (
 
   <div>
-    {/*H <Link to="/AdminMessage">
-      <ListItem button >
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText secondary="Message to admin" />
-      </ListItem></Link> */}
 
-    <ListItem button>
-      <ListItemIcon>
-        <FeedbackIcon />
-      </ListItemIcon>
-      <ListItemText primary="Feedback" style={{color:'#000000'}}/>
-    </ListItem>
 
     <Link to="/owner/Contactus">
       <ListItem button >
@@ -110,7 +97,7 @@ export const secondaryListItems = (
         <ListItemText primary="Hall Details" />
       </ListItem>
     </Link> */}
-    <p style={{fontStyle:'italic',marginTop:'30%',marginLeft:'7%'}}>Please read <a style={{color:'blue',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/TermsAndCondition')}>Terms & Condition</a> <br/> and <a style={{color:'blue',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/PrivacyPolicy')}>Privacy Policy</a> carefully.</p>
+    <p style={{fontStyle:'italic',marginTop:'30%',marginLeft:'7%'}}>Please read <a style={{color:'green',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/TermsAndCondition')}>Terms & Condition</a> <br/> and <a style={{color:'green',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/PrivacyPolicy')}>Privacy Policy</a> carefully.</p>
   <br/><hr/>
   </div>
 );

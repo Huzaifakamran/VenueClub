@@ -110,14 +110,14 @@ class ViewVenue extends Component {
                     })
                     i++;
                 }
-                else if (key1 === "phoneNumber") {
-                    data.push({
-                        key: i,
-                        name: "number",
-                        value: val1[key1]
-                    })
-                    i++;
-                }
+                // else if (key1 === "phoneNumber") {
+                //     data.push({
+                //         key: i,
+                //         name: "number",
+                //         value: val1[key1]
+                //     })
+                //     i++;
+                // }
             }
             this.setState({ userData: val1, data })
         })
@@ -260,9 +260,18 @@ class ViewVenue extends Component {
         if (obj.email == '' || obj.password == '' || obj.fName == '' || obj.lName == '' || obj.email == '' || obj.password == '' || obj.phoneNumber == '' || obj.confirmPassword == '' || obj.accountType == '') {
             swal('Fill All textfield(s)')
         }
+        else if(obj.email.length < 5){
+            swal('Enter valid email')
+        }
+        else if(obj.phoneNumber.length < 11 || obj.phoneNumber.length > 11){
+            swal('Enter valid phone number')
+        }
         else if (obj.accountType == 2) {
             if (obj.paymentType == '' || obj.numberType == '') {
                 swal('Fill')
+            }
+            else if(obj.numberType.length < 11 || obj.numberType.length > 11){
+                swal('Enter valid account number')
             }
             else {
                 this.setState({
@@ -608,7 +617,7 @@ class ViewVenue extends Component {
                                             Privacy Policy
                                     </Button>
                                         <Button style={{ color: 'white' }} data-toggle="modal" data-target="#exampleModalCenter">
-                                            Login/SignUp
+                                            Login / SignUp
                                     </Button>
                                     </div>
                                 }
@@ -876,7 +885,7 @@ class ViewVenue extends Component {
                             <Table pagination={false} dataSource={data} style={{ display: 'inline', width: '30%' }}>
                                 <Column title="" dataIndex="name" key="firstName" />
                                 <Column title="" dataIndex="value" key="lastName" />
-                            </Table><br/>
+                            </Table><br/><br/>
                             <button type="primary" className="btn btn-success" onClick={() => this.venueBooking()} block>
                                 Register this Venue
                                         </button>

@@ -89,7 +89,7 @@ export const mainListItems = (
       <ListItemText primary="Feedback" style={{color:'#000000'}}/>
     </ListItem> */}
    
-  <p style={{fontStyle:'italic',marginTop:'30%',marginLeft:'7%'}}>Please read <a style={{color:'blue',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/TermsAndCondition')}>Terms & Condition</a> <br/> and <a style={{color:'blue',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/PrivacyPolicy')}>Privacy Policy</a> carefully.</p>
+  <p style={{fontStyle:'italic',marginTop:'30%',marginLeft:'7%'}}>Please read <a style={{color:'green',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/TermsAndCondition')}>Terms & Condition</a> <br/> and <a style={{color:'green',fontWeight:'bold',textDecorationLine:'underline'}} onClick={() => window.open('/PrivacyPolicy')}>Privacy Policy</a> carefully.</p>
   <br/><hr/>
   </div>
 );

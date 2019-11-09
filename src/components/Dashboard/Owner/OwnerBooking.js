@@ -171,6 +171,8 @@ class OwnerBooking extends Component {
                   
                   <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
                   <br/>
+                  <li><a onClick={() => window.location.href='/RegisterHall'}>Register Venue</a></li>
+                  <br/>
                   <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
                   <br/>
                   <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>

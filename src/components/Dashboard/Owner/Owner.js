@@ -20,7 +20,6 @@ import DotsIcon from '@material-ui/icons/MoreVert';
 import { mainListItems, secondaryListItems } from './listItems';
 import { Link } from 'react-router-dom';
 import Deposits from './Deposits';
-import Orders from './Orders';
 import { Button } from '@material-ui/core';
 import 'antd/dist/antd.css';
 import { Card, Pagination, Col, Row, Skeleton, Button as Btn } from 'antd';
@@ -167,6 +166,8 @@ export default function Dashboard(props) {
                   
                   <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
                   <br/>
+                  <li><a onClick={() => window.location.href='/RegisterHall'}>Register Venue</a></li>
+                  <br/>
                   <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
                   <br/>
                   <li><a onClick={() => window.location.href='/OwnerDashboard/setting'}>Setting</a></li>
@@ -243,12 +244,12 @@ export default function Dashboard(props) {
               </Paper>
             </Grid>
     
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Orders />
               </Paper>
-            </Grid>
-          </Grid>
+                  </Grid>*/}
+          </Grid> 
         </Container>
 
       </main>

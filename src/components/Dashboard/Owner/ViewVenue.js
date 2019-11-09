@@ -21,6 +21,7 @@ import firebase from '../../../config/firebase'
 import { Card, Skeleton, Table } from 'antd';
 import swal from 'sweetalert';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
+import SearchByEmail from '../../SearchByEmail';
 import './style.css'
 
 const { Meta } = Card
@@ -322,7 +323,7 @@ render() {
                 <AppBar style={{ background: '#3c3c3c' }} position="fixed">
                     <Toolbar>
                         <Typography component="h1" variant="h6" color="inherit" >
-                            {user ? "User Dashboard" : "Venue Club"}
+                            {user ? "Venue Details" : "Venue Club"}
                         </Typography>
                         <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
                             {user ? <div>
@@ -337,6 +338,8 @@ render() {
                                     
                                     <li><a onClick={() => window.location.href='/OwnerDashboard'}>Home</a></li>
                                     <br/>
+                                    <li><a onClick={() => window.location.href='/RegisterHall'}>Register Venue</a></li>
+                  <br/>
                                     <li><a onClick={() => window.location.href='/OwnerDashboard/chat'}>Message</a></li>
                                     <br/>
                                     <li><a onClick={() => window.location.href = '/editVenue'}>Edit Venue</a></li>
@@ -550,6 +553,8 @@ render() {
                 </div>}
             </div>
                 : <div style={{ marginTop: 85 }}><Skeleton /></div>}
+                <hr/>
+                <SearchByEmail/>
             < Footer />
 
         </div >

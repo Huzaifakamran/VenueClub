@@ -7,6 +7,8 @@ import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-butto
 import firebase from '../../config/firebase';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import Modal from 'react-responsive-modal';
 
 class Header extends Component {
 
@@ -14,6 +16,8 @@ class Header extends Component {
     constructor() {
         super();
         this.state = {
+            randomNo:'',
+            open: false,
             DropdownIsVisible: false,
             showLogin: true,
             showSignup: false,
@@ -29,7 +33,6 @@ class Header extends Component {
                 email: '',
                 phoneNumber: '',
                 password: '',
-                confirmPassword: '',
                 accountType: '',
                 paymentType: '',
                 numberType: '',
@@ -41,6 +44,7 @@ class Header extends Component {
                 lName: '',
                 email: '',
                 phoneNumber: '',
+                password:'',
                 accountType: '',
                 paymentType: '',
                 numberType: '',
@@ -49,6 +53,42 @@ class Header extends Component {
             }
         }
     }
+
+    onOpenModal() {
+        this.setState({ open: true });
+        };
+      
+       onCloseModal = () => {
+        this.setState({ open: false });
+        };
+      
+        getQuestion(){
+        const { femail , fques , fans , fpass } = this.state;
+        var  email = document.getElementById('secemail').value;
+          if(email.length<4){
+            Swal.fire('Oops' , 'Enter Correct Email Address' , 'error')
+          }else{
+            firebase.database().ref("/users").orderByChild("email").equalTo(""+email).on("value", (snapshot)=> {
+              if(snapshot.exists()){
+              snapshot.forEach((childSnapshot)=> {
+               var data = childSnapshot.val();
+               console.log(data)
+               document.getElementById('secques').innerHTML=data.secQuestion;
+               this.setState({
+                 femail : data.email ,
+                 fques : data.secQuestion ,
+                 fans : data.secAnswer ,
+                 fpass : data.password
+               })
+              })
+            }
+              else{
+                Swal.fire('Oops...', 'The email is not found in database', 'error')
+              }
+            })
+          }
+        }
+      
 
     showSignup() {
         window.$('#exampleModalCenter').modal('hide');
@@ -128,16 +168,55 @@ class Header extends Component {
         }
     }
 
-    signUp() {
-        const { obj } = this.state
+    // showSecCodeModel(){
+    //     const {randomNo,email}= this.state;
+    //     window.$('#signupModalCenter').modal('hide');
+    //     this.setState({open:true});
+    //       this.setState({ randomNo:Math.round(1+Math.random()* 1000000)});
+    //     var from = "admin@venueClub.com"
+    //  var to = ""+email;
+    //  var subject = "Account Verification Request"
+    //  var message = "Your Venue Club verification Code is :"+randomNo;
+    //  var ans = document.getElementById('secCode').value;
+    //   console.log(ans , randomNo)
+    //  if(randomNo ==ans ){
+    //    // http://192.168.0.111:5000/send'
+    //    //http://localhost:5000/send
+    //    axios.post('http://venueclub786.herokuapp.com/send', {
+    //      from , to , subject , message
+    //    }).then((res) => {
+    //      Swal.fire('Done' , 'Your Account has been created' )
+    //      console.log(res.statusText);
+    //    });
+    //  }
+    //  else{
+    //    Swal.fire('Oops' , 'Your Answer was incorrect' , 'error')
+    //  }
+    //  Swal.fire('Done' , 'Your Account has been created' ).then((okay) => {
+    //    if(okay){
+    //        window.location.reload();
+    // }
+    //  })}
 
+    signUp() {
+        const { obj } = this.state;
+      
+        // window.location.reload();
         if (obj.email == '' || obj.password == '' || obj.fName == '' || obj.lName == '' || obj.email == '' || obj.password == '' || obj.phoneNumber == '' || obj.confirmPassword == '' || obj.accountType == '' || obj.secQuestion == '' ||obj.secAnswer == '') {
             swal('Fill All textfield(s)')
+        }else if(obj.email.length < 5){
+            swal('Enter valid email')
+        }
+        else if(obj.phoneNumber.length < 11 || obj.phoneNumber.length > 11){
+            swal('Enter valid phone number')
         }
     
         else if (obj.accountType == 2) {
             if (obj.paymentType == '' || obj.numberType == '') {
                 swal('Fill both textfield(s)')
+            }
+            else if(obj.numberType.length < 11 || obj.numberType.length > 11){
+                swal('Enter valid account number')
             }
             else {
                 this.setState({
@@ -145,15 +224,14 @@ class Header extends Component {
                 })
                 firebase.auth().createUserWithEmailAndPassword(obj.email, obj.password).then((res) => {
                     obj['uid'] = res.user.uid
-                    delete obj.password
-                    delete obj.confirmPassword
+                     
+                    
                     var obj1 = {
                         fName: '',
                         lName: '',
                         email: '',
                         phoneNumber: '',
                         password: '',
-                        confirmPassword: '',
                         accountType: '',
                         paymentType: '',
                         numberType: '',
@@ -169,9 +247,12 @@ class Header extends Component {
                             swal({
                                 title: "Signup Successfully",
                                 icon: "success"
-                              })
+                              }).then((okay) =>{
+                                  if(okay){
                             window.$('#signupModalCenter').modal('hide');
                             window.location.href = '/OwnerDashboard'
+                        
+                        }})
                         })
                 })
                     .catch((error) => {
@@ -185,15 +266,14 @@ class Header extends Component {
             })
             firebase.auth().createUserWithEmailAndPassword(obj.email, obj.password).then((res) => {
                 obj['uid'] = res.user.uid
-                delete obj.password
-                delete obj.confirmPassword
+                
                 var obj1 = {
                     fName: '',
                     lName: '',
                     email: '',
                     phoneNumber: '',
                     password: '',
-                    confirmPassword: '',
+                    
                     accountType: '',
                     paymentType: '',
                     numberType: '',
@@ -224,6 +304,10 @@ class Header extends Component {
                     swal('something went wrong' + error);
                 });
         }
+       
+     
+
+       
     }
 
     scrollToElement = (element) => {
@@ -303,6 +387,7 @@ class Header extends Component {
                     lName: '',
                     email: '',
                     phoneNumber: '',
+                    password:'',
                     accountType: '',
                     paymentType: '',
                     numberType: '',
@@ -334,6 +419,7 @@ class Header extends Component {
                 lName: '',
                 email: '',
                 phoneNumber: '',
+                password:'',
                 accountType: '',
                 paymentType: '',
                 numberType: '',
@@ -468,7 +554,7 @@ class Header extends Component {
     }
 
     render() {
-        const { obj, email, password,obj2, DropdownIsVisible ,phoneNumber} = this.state;
+        const { obj, email, password,obj2, DropdownIsVisible ,phoneNumber,open} = this.state;
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bck_black fixed-top"
@@ -555,6 +641,8 @@ class Header extends Component {
                                         <br />
                                         <br />
                                         <p style={{ color: 'black' }}>Don't have an account? <a style={{ color: 'blue' }} onClick={() => { this.showSignup() }} data-toggle="modal" >Sign up</a>
+
+                                      
                                         </p>
 
                                     </div>
@@ -659,6 +747,25 @@ class Header extends Component {
                                         <br />
 
                                         <button disabled={this.state.disable} type="button" className="btn btn-success" onClick={() => this.signUp()}>Sign Up</button>
+                                        <Modal open={open} onClose={this.onCloseModal} center>
+                                                <img style={{width: '25%', height: '25%' }} src={require('../../resources/images/final.png')} onClick={()=> window.location.href='/'}/>
+                                                
+                                                <div  style={{borderRadius:'10px' , padding:'20px'}}>
+                                                <h4 style={{color:'	rgb(0,179,0)' , textAlign:'center'}} > <b> Enter Security Code.. </b> </h4>
+                                                <p style={{textAlign:'center'}}>  <b>" After SignUp , User Should Provide the Security Code in order to get access on Provided Email Address."  </b> </p>
+                                                <hr/>
+                                                
+                                                
+                                                <input className="form-control" style={{marginBottom:'5px'}} id="secCode"  placeholder="Write Your Security Code Here" />
+                                                <p style={{textAlign:'center'}}> < button  style={{margin:'2px auto'}} type="submit"  onClick={()=>this.showSecCodeModel()} > Submit </ button> </p>
+                                                
+                                                <hr/>
+                                                {/* <p id="secques" className="form-control"> </p>
+                                                <input className="form-control" style={{marginBottom:'5px'}} id="secans" placeholder="Write Your Answer Here" />
+                                                
+                                                    <button  style={{margin:'2px auto'}} type="submit"  onClick={()=>this.getAnswer()} > Submit </button> */}
+                                                </div>
+                                                </Modal>
                                         <br />
                                         <br />
                                         <p style={{ color: 'black' }}>Already have an account? <a style={{ color: 'blue' }} onClick={() => { this.showLogin() }} data-toggle="modal" >Login</a>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {Component} from 'react';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -7,58 +7,76 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
+import firebase from '../../../config/firebase';
 
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
 
-const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
-];
+class Orders extends Component{
+  constructor(){
+    super()
+    this.state={
+    displayUsers:[]
+    }
+  }
 
-const useStyles = makeStyles(theme => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
-  },
-}));
+  componentDidMount(){
+    this.showData();
+  }
+  logout() {
+    sessionStorage.removeItem('user')
+    window.location.reload()
+  }
 
-export default function Orders() {
-  const classes = useStyles();
+  showData(){
+    const {displayUsers} = this.state;
+    firebase.database().ref("/users").limitToFirst(5).on("value", (snapshot)=> {
+      snapshot.forEach((childSnapshot)=> {
+        var fullName = ""+childSnapshot.val().fName+" "+childSnapshot.val().lName;
+        var obj = {
+         fname: ""+fullName,
+         email : childSnapshot.val().email ,
+         phone :childSnapshot.val().phoneNumber ,
+         userID : childSnapshot.val().uid ,
+         accType : childSnapshot.val().accountType, 
+        }
+        
+        displayUsers.push(obj)
+        this.setState({displayUsers})
+      })
+    })
+  }
+render(){
+  const {displayUsers} = this.state;
   return (
     <React.Fragment>
-      <Title>Recent Bookings</Title>
+      <Title>Recent Users</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Phone</TableCell>
+            <TableCell align="right">User ID</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+           {displayUsers.map((val) => {
+             return(
+            <TableRow>{val.fname}
+              <TableCell>{val.email}</TableCell>
+              <TableCell>{val.phone}</TableCell>
+              <TableCell align="right">{val.userID}</TableCell>
+              
             </TableRow>
-          ))}
+             )  })} 
         </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="javascript:;">
+     <br/>
+        <Link style={{color:'green'}} color="primary" onClick={()=> window.location.href='/adminDashboard/Users'}>
           See more orders
         </Link>
-      </div>
+
     </React.Fragment>
   );
-}
+}}
+export default Orders;

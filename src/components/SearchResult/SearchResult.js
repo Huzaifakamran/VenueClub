@@ -23,6 +23,7 @@ import swal from 'sweetalert';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import People from '@material-ui/icons/People';
 import SearchByEmail from '../SearchByEmail';
+import '../../resources/scrollbar.css';
 
 const { Meta } = Card
 
@@ -277,10 +278,19 @@ class SearchResult extends Component {
         if (obj.email == '' || obj.password == '' || obj.fName == '' || obj.lName == '' || obj.email == '' || obj.password == '' || obj.phoneNumber == '' || obj.confirmPassword == '' || obj.accountType == '' || obj.secQuestion == '' ||obj.secAnswer == '') {
             swal('Fill All textfield(s)')
         }
+        else if(obj.email.length < 5){
+            swal('Enter valid email')
+        }
+        else if(obj.phoneNumber.length < 11 || obj.phoneNumber.length > 11){
+            swal('Enter valid phone number')
+        }
     
         else if (obj.accountType == 2) {
             if (obj.paymentType == '' || obj.numberType == '') {
                 swal('Fill both textfield(s)')
+            }
+            else if(obj.numberType.length < 11 || obj.numberType.length > 11){
+                swal('Enter valid account number')
             }
             else {
                 this.setState({
@@ -868,7 +878,7 @@ class SearchResult extends Component {
                        <div style={{ background: '#ECECEC', padding: '30px' }}>
                         <h1 className="font_righteous" style={{ textAlign: 'center'}}> <span style={{color:'green'}}>{allHallData.length}</span> Result(s) found</h1>
                            
-                            <Row gutter={16}>
+                            <Row gutter={16} >
                                 {allHallData.map((v, i) => {
                                     
                                     return <Col span={8} key={i}>
@@ -901,15 +911,16 @@ class SearchResult extends Component {
                                     </Col>
                                 })}
                             </Row>
+                            
                         </div>
                     </div> : allHallData.length ? <div>
                         
-                        <div style={{ background: '#ECECEC', padding: '30px',marginTop:10}}>
+                        <div style={{ background: '#ECECEC', padding: '30px'}}>
                         <h1 className="font_righteous" style={{ textAlign: 'center'}}> <span style={{color:'green'}}>{allHallData.length}</span> Result(s) found</h1>
-                            <Row gutter={16}>
+                            <Row gutter={16} >
                                 {allHallData.map((v, i) => {
                                    
-                                    return <Col span={8} key={i}>
+                                    return <Col span={8} key={i} style={{marginTop:'30px'}}>
                                          
                                         <Card
                                             cover={<img alt="example" style={{ height: 260 }} src={`${v.picture[0]}`} />}
@@ -917,10 +928,13 @@ class SearchResult extends Component {
                                              <h2 style={{float:'left',fontWeight:'bold'}}>{v.hallName}</h2>
                                              <label style={{float:'right'}}>{`Rs: ${v.price}`}</label>
                                             <br /><br/>
-                                            <p style={{float:'left',fontWeight:'bold'}}> {v.address}</p>
-                                            <label style={{float:'right'}}>Advance: {((v.price)*8)/100}</label>                 
+                                            <label style={{float:'right'}}>Advance: {((v.price)*8)/100}</label> <br/>   <br/>
+                                            <div className="scrollbar square scrollbar-lady-lips thin" style={{overflowY:'scroll' , height:'120px'}}>
+             
+                                            <p style={{float:'left',fontWeight:'bold'}}> {v.address}</p></div>
+                                                         
           
-                                            <div style={{textAlign:'center',marginTop:60}}>
+                                            <div style={{textAlign:'center'}}>
                                             <IconButton style={{fontSize:'12px',float:'right'}}>
                                                 <People />{v.capacity}
                                             </IconButton>

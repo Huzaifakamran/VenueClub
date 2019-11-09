@@ -26,6 +26,7 @@ import { Button } from '@material-ui/core';
 import 'antd/dist/antd.css';
 import '../../../resources/bootstrap.min.css';
 import { Card, Skeleton, Table } from 'antd';
+import Zoom from 'react-reveal/Zoom';
 
 const { Meta } = Card;
 
@@ -199,13 +200,6 @@ export default function Dashboard(props) {
 
         
         
-            {/* <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-             <Button style={{ color: 'white' }} >{props.user.fName}</Button>
-              <button class="dropdown-item" type="button">Action</button>
-              <button class="dropdown-item" type="button">Another action</button>
-              <button class="dropdown-item" type="button">Something else here</button>
-            </div> */}
-          
           
          
           
@@ -247,12 +241,15 @@ export default function Dashboard(props) {
           columns={columns}
           dataSource={props.data.slice().reverse()}
         />
-       </div> : !props.isData ? <div style={{ width: '100%', justifyContent: 'center', textAlign: 'center', marginTop: 140 }}>
+       </div> : !props.isData ? 
+       
+       <Zoom delay={5000}>
+       <div style={{ width: '100%', justifyContent: 'center', textAlign: 'center', marginTop: 140 }}>
        <h1 className="font_righteous"> Welcome to the user dashboard</h1>
        <img style={{width:'50%', height: '70%' }} src={require('../../../resources/images/final.png')} onClick={()=> window.location.href='/'}/><br/><br/>
        <button type="button" className="btn btn-success" style={{padding:'10px 10px'}} onClick={()=>window.location.href='/searchResult'}>Search Venue &nbsp;<SearchIcon/></button>
             
-      </div>
+      </div></Zoom>
       
       : <Skeleton />} 
      </div>
