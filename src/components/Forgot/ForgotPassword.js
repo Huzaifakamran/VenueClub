@@ -73,7 +73,7 @@ class ForgotPassword extends Component {
     if(fans.toLowerCase()==ans.toLowerCase()){
       // http://192.168.0.111:5000/send'
       //http://localhost:5000/send
-      axios.post('http://venueclub786.herokuapp.com/send', {
+      axios.post('https://venueclub786.herokuapp.com/send', {
         from , to , subject , message
       }).then((res) => {
         Swal.fire('Done' , 'Your Paasword has been sent to your email' )
@@ -90,7 +90,6 @@ class ForgotPassword extends Component {
     })
   
    }
-
   
     render() {
         const {open} = this.state;

@@ -57,7 +57,7 @@ class Users extends Component {
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
+    confirmButtonText: 'Yes'
   }).then((result) => {
     if (result.value) {
         firebase.database().ref(`/users/${displayUsers[i].userID}`).set({})
@@ -85,15 +85,29 @@ class Users extends Component {
                             <ArrowBack />   
                          </IconButton>&nbsp;&nbsp; Admin Dashboard || Users
                          </Typography>
-                        <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
-                            <Button style={{ color: 'white' }} onClick={() => window.location.href = '/adminDashboard'}>Home</Button>
-                            <IconButton color="inherit" title="Profile">
-                                <UserIcon />
-                            </IconButton>
-                            <Button style={{ color: 'white' }} onClick={() => this.logout()} >Logout</Button>
-
-
-                        </div>
+                         <div className="dropdown" style={{marginLeft:980}}>
+                <button className="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Profile
+                <span className="caret"></span></button>
+                <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                  <br/>
+                  <li>Venue Club</li><hr style={{backgroundColor:'#ffffff'}}/>
+                  
+                  <li><a onClick={() => window.location.href='/AdminDashboard'}>Home</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/adminDashboard/Users'}>Users</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/adminDashboard/RegisteredHalls'}>Halls</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/adminDashboard/Complaints'}>Complaints</a></li>
+                  <br/>
+                
+                 
+                 
+                 <hr style={{backgroundColor:'#ffffff'}}/>
+                  <li><a onClick={()=>this.logout()}>Logout</a></li>
+                  <br/>
+                </ul>
+              </div>
 
                     </Toolbar>
                 </AppBar>
@@ -139,8 +153,7 @@ class Users extends Component {
                                 <div className="col">
                                 <p>{val.accType}</p>
                                 </div>
-                                <button className="btn btn-danger" onClick={(e)=>this.deleteRecord(ind)}>Delete</button>
-                                <button className="btn btn-success ml-2">Message</button>
+                                <button className="btn btn-danger" onClick={(e)=>this.deleteRecord(ind)}>Resolve</button>
                                 </div>
                                 
                             </button>

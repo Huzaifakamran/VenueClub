@@ -81,13 +81,13 @@ class DashboardComplains extends Component{
          showCancelButton: true,
          confirmButtonColor: '#3085d6',
          cancelButtonColor: '#d33',
-         confirmButtonText: 'Yes, delete it!'
+         confirmButtonText: 'Yes'
        }).then((result) => {
          if (result.value) {
              firebase.database().ref(`/Message/HallOwner/${displayComplaints[i].userID}`).set({})
            Swal.fire(
              'Deleted!',
-             'Your file has been deleted.',
+             'Your Record has been deleted.',
              'success'
            )
            window.location.reload();
@@ -108,7 +108,7 @@ class DashboardComplains extends Component{
          showCancelButton: true,
          confirmButtonColor: '#3085d6',
          cancelButtonColor: '#d33',
-         confirmButtonText: 'Yes, delete it!'
+         confirmButtonText: 'Yes'
        }).then((result) => {
          if (result.value) {
              firebase.database().ref(`/Message/Users/${displayUserComplaints[i].userID}`).set({})
@@ -145,7 +145,7 @@ render(){
               <TableCell>{val.email}</TableCell>
               <TableCell>{val.message}</TableCell>
               <TableCell align="right">{val.userID}</TableCell>
-              <TableCell><button className="btn btn-danger" onClick={(e)=> this.deleteUserRecord(ind)}>Delete</button></TableCell>
+              <TableCell><button className="btn btn-danger" onClick={(e)=> this.deleteUserRecord(ind)}>Resolve</button></TableCell>
             </TableRow>
              )  })} 
                         <Title>From HallOwner: </Title>
@@ -159,7 +159,7 @@ render(){
                             <TableCell>{val.email}</TableCell>
                             <TableCell>{val.message}</TableCell>
                             <TableCell align="right">{val.userID}</TableCell>
-                            <TableCell><button className="btn btn-danger" onClick={(e)=> this.deleteHallOwnerRecord(ind)}>Delete</button></TableCell>
+                            <TableCell><button className="btn btn-danger" onClick={(e)=> this.deleteHallOwnerRecord(ind)}>Resolve</button></TableCell>
                           </TableRow>
                         )
 
@@ -172,7 +172,7 @@ render(){
       </Table>
      <br/>
         <Link style={{color:'green'}} color="primary" onClick={()=> window.location.href='/adminDashboard/Complaints'}>
-          See more orders
+          See more complaints
         </Link>
 
     </React.Fragment>

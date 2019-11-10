@@ -54,8 +54,8 @@ class SearchResult extends Component {
                 password: '',
                 confirmPassword: '',
                 accountType: '',
-                paymentType: '',
-                numberType: '',
+                // paymentType: '',
+                // numberType: '',
                 secQuestion:'',
                 secAnswer:''
             },
@@ -65,8 +65,8 @@ class SearchResult extends Component {
                 email: '',
                 phoneNumber: '',
                 accountType: '',
-                paymentType: '',
-                numberType: '',
+                // paymentType: '',
+                // numberType: '',
                 secQuestion:'',
                 secAnswer:''
             }                //C
@@ -109,12 +109,12 @@ class SearchResult extends Component {
 
     updateData(e) {
         const { name, value } = e
-         if (value == 2 && name === "accountType") {    //C
-            this.setState({ DropdownIsVisible: true })
-        }
-        else if (value == 1 && name === "accountType") {
-            this.setState({ DropdownIsVisible: false })
-        }                                               //C
+        //  if (value == 2 && name === "accountType") {    //C
+        //     this.setState({ DropdownIsVisible: true })
+        // }
+        // else if (value == 1 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: false })
+        // }                                               //C
         this.setState({
             obj: {
                 ...this.state.obj,
@@ -125,12 +125,12 @@ class SearchResult extends Component {
 
      updateData1(e) {                   //C
         const { name, value } = e;
-        if (value == 2 && name === "accountType") {
-            this.setState({ DropdownIsVisible: true })
-        }
-        else if (value == 1 && name === "accountType") {
-            this.setState({ DropdownIsVisible: false })
-        }
+        // if (value == 2 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: true })
+        // }
+        // else if (value == 1 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: false })
+        // }
 
         this.setState({
             obj2: {
@@ -220,7 +220,7 @@ class SearchResult extends Component {
             })
             await firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((res) => {
-                    if(email == "huzaifakamran@admin.com"){
+                    if(email == "venueclub786@gmail.com"){
                         swal('login successfull')
                         window.location.href ='/AdminDashboard'
                         sessionStorage.setItem('user', 'admin')
@@ -265,7 +265,7 @@ class SearchResult extends Component {
                     })
                                 }                })
                 .catch((error) => {
-                    swal('something went wrong' + error)
+                    swal("Oops!", "Something went wrong!", error);
 
                 });
         }
@@ -284,15 +284,18 @@ class SearchResult extends Component {
         else if(obj.phoneNumber.length < 11 || obj.phoneNumber.length > 11){
             swal('Enter valid phone number')
         }
+        else if(obj.password != obj.confirmPassword){
+            swal("Oops!", "Password does not matched!", "error");
+        }
     
         else if (obj.accountType == 2) {
-            if (obj.paymentType == '' || obj.numberType == '') {
-                swal('Fill both textfield(s)')
-            }
-            else if(obj.numberType.length < 11 || obj.numberType.length > 11){
-                swal('Enter valid account number')
-            }
-            else {
+            // if (obj.paymentType == '' || obj.numberType == '') {
+            //     swal('Fill both textfield(s)')
+            // }
+            // else if(obj.numberType.length < 11 || obj.numberType.length > 11){
+            //     swal('Enter valid account number')
+            // }
+            // else {
                 this.setState({
                     disable: true
                 })
@@ -308,8 +311,8 @@ class SearchResult extends Component {
                         password: '',
                         confirmPassword: '',
                         accountType: '',
-                        paymentType: '',
-                        numberType: '',
+                        // paymentType: '',
+                        // numberType: '',
                         secQuestion:'',
                         secAnswer:''
                     }
@@ -319,7 +322,12 @@ class SearchResult extends Component {
                         .then(() => {
                             sessionStorage.setItem('user', JSON.stringify(obj))
                             this.setState({ obj: obj1, disable: false })
-                            swal('Signup successfull');
+                            swal({
+                                title: "successfully!",
+                                text: "Signup Successfully",
+                                icon: "success",
+                                // button: "OK",
+                            });
                             window.$('#signupModalCenter').modal('hide');
                             window.location.href = '/OwnerDashboard'
                         })
@@ -327,7 +335,7 @@ class SearchResult extends Component {
                     .catch((error) => {
                         swal('something went wrong' + error);
                     });
-            }
+            
         }
         else {
             this.setState({
@@ -345,8 +353,8 @@ class SearchResult extends Component {
                     password: '',
                     confirmPassword: '',
                     accountType: '',
-                    paymentType: '',
-                    numberType: '',
+                    // paymentType: '',
+                    // numberType: '',
                     secQuestion:'',
                     secAnswer:''
                 }
@@ -516,10 +524,10 @@ class SearchResult extends Component {
             swal('Fill All textfield(s)')
         }
         else if (obj2.accountType == 2) {
-            if (obj2.paymentType == '' || obj2.numberType == '') {
-                swal('Fill')
-            }
-            else {
+            // if (obj2.paymentType == '' || obj2.numberType == '') {
+            //     swal('Fill')
+            // }
+            // else {
                 this.setState({
                     disable: true
                 })
@@ -529,8 +537,8 @@ class SearchResult extends Component {
                     email: '',
                     phoneNumber: '',
                     accountType: '',
-                    paymentType: '',
-                    numberType: '',
+                    // paymentType: '',
+                    // numberType: '',
                     secQuestion:'',
                     secAnswer:''
                 }
@@ -543,7 +551,7 @@ class SearchResult extends Component {
                         window.location.href = '/OwnerDashboard'
                     })
             }
-        }
+        
         else {
             this.setState({
                 disable: true
@@ -554,8 +562,8 @@ class SearchResult extends Component {
                 email: '',
                 phoneNumber: '',
                 accountType: '',
-                paymentType: '',
-                numberType: '',
+                // paymentType: '',
+                // numberType: '',
                 secQuestion:'',
                 secAnswer:''
             }
@@ -580,7 +588,7 @@ class SearchResult extends Component {
   
 
     render() {
-        const { allHallData, visible, search, user, obj, email, password , obj2, phoneNumber, DropdownIsVisible} = this.state
+        const { allHallData, visible, search, user, obj, email, password , obj2, phoneNumber} = this.state
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
@@ -756,7 +764,7 @@ class SearchResult extends Component {
                                         <option value="2">Hall Owner</option>
                                     </select>
                                     <br /><br />
-                                    {DropdownIsVisible &&
+                                    {/* {DropdownIsVisible &&
                                         <div>
                                             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj.paymentType} onChange={(e) => this.updateData(e.target)}>
                                                 <option selected>Select Payment Method...</option>
@@ -768,7 +776,7 @@ class SearchResult extends Component {
                                             </div>
                                         </div>
 
-                                    }
+                                    } */}
 
                                 </div>
 
@@ -830,7 +838,7 @@ class SearchResult extends Component {
                                         <option value="2">Hall Owner</option>
                                     </select>
                                     <br /><br />
-                                    {DropdownIsVisible &&
+                                    {/* {DropdownIsVisible &&
                                         <div>
                                             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj2.paymentType} onChange={(e) => this.updateData1(e.target)}>
                                                 <option selected>Select Payment Method...</option>
@@ -842,7 +850,7 @@ class SearchResult extends Component {
                                             </div>
                                         </div>
 
-                                    }
+                                    } */}
 
                                 </div>
                                 <div className="modal-footer d-flex justify-content-center" style={{ textAlign: 'center' }}>
@@ -962,7 +970,7 @@ class SearchResult extends Component {
                 < Footer />
                 <Modal
                     visible={visible}
-                    title="Create a new collection"
+                    title="REGISTRATION FORM"
                     okText="Submit"
                     onCancel={() => this.setState({ visible: false })}
                     onOk={this.handleSubmit}

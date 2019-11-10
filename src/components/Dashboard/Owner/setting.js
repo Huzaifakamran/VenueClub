@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import firebase from '../../../config/firebase'
 import swal from 'sweetalert';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import Swal from 'sweetalert2';
 
 class Register extends Component {
   constructor(props) {
@@ -98,7 +99,34 @@ class Register extends Component {
       }
     });
   }
+  
+  
+deleteRecord(){
+  const {user} = this.state;
 
+  Swal.fire({
+   title: 'Are you sure?',
+   text: "You won't be able to revert this!",
+   type: 'warning',
+   showCancelButton: true,
+   confirmButtonColor: '#3085d6',
+   cancelButtonColor: '#d33',
+   confirmButtonText: 'Yes, delete it!'
+ }).then((result) => {
+   if (result.value) {
+    firebase.database().ref('users').child(`${user['key']}`).set({})
+     Swal.fire(
+       'Deleted!',
+       'Your record has been deleted.',
+       'success'
+     )
+     window.location.href='/';
+   }
+ })
+ 
+  
+  
+ }
 
 
   render() {
@@ -214,7 +242,7 @@ class Register extends Component {
       <hr />
       <br />
 
-      <button type="submit" className="btn btn-danger">Delete Account</button><br /><br />
+      <button type="submit" className="btn btn-danger" onClick={() => this.deleteRecord()}>Delete Account</button><br /><br />
       <p>This action can not be undone</p>
 
     </div>

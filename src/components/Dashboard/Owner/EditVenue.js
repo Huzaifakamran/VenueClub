@@ -359,7 +359,7 @@ class ViewVenue extends Component {
                     <AppBar style={{ background: '#3c3c3c' }} position="fixed">
                         <Toolbar>
                             <Typography component="h1" variant="h6" color="inherit" >
-                                {user ? "User Dashboard" : "Venue Club"}
+                                {user ? "Edit Venue" : "Venue Club"}
                             </Typography>
                             <div style={{ marginLeft: 'auto', marginRight: '-12px' }}>
                                 {user ? <div>

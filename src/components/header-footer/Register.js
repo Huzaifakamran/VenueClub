@@ -3,7 +3,18 @@ import '../../resources/bootstrap.min.css';
 import Header from '../header-footer/FixedHeader';
 import Footer from '../header-footer/Footer';
 import firebase from '../../config/firebase'
-import swal from 'sweetalert'
+import swal from 'sweetalert';
+import { css } from '@emotion/core';
+// First way to import
+import { BeatLoader } from 'react-spinners';
+import { display } from '@material-ui/system';
+
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 class Register extends Component {
   constructor(props) {
@@ -20,7 +31,8 @@ class Register extends Component {
         picture: [],
         venueLocation: '',
         venueType: '',
-        description: ''
+        description: '',
+        loading:false
       },
       pictureUrl: []
     }
@@ -55,7 +67,8 @@ class Register extends Component {
   }
 
   async addData() {
-    var { data, user, pictureUrl } = this.state
+    var { data, user, pictureUrl,loading } = this.state
+    document.getElementById("register").style.display='none';
     // // Update progress bar
     // task.on('state_changed', (snapshot) => {
     //     var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -78,11 +91,26 @@ class Register extends Component {
     // .catch((err) => {
     //   console.log(err)
     // })
-    if (data.hallName === '' || data.address === '' || data.capacity === '' || data.price === '' || data.picture.length === 0 || data.venueLocation === '' || data.venueType === '' || data.description === '') {
-      swal('Fill All textfield(s)')
+     if (data.hallName === '' || data.address === '' || data.capacity === '' || data.price === '' || data.picture.length === 0 || data.venueLocation === '' || data.venueType === '' || data.description === '') {
+      swal('Fill All textfield(s)').then((okay)=>{
+        if(okay){
+          document.getElementById("register").style.display='block';
+        }
+      })
+      
+      
+    }else if(data.picture.length >= 4){
+      swal('Upload 3 images at a time').then((okay)=>{
+        if(okay){
+          document.getElementById("register").style.display='block';
+        }
+      })
+     
+      
     }
     else {
       this.setState({ disable: true })
+      this.setState({loading:true})
 
       firebase.database().ref('allHallData').child(`${user.uid}`).push(data)
         .then(async (snap) => {
@@ -111,8 +139,12 @@ class Register extends Component {
             },
             disable: false
           })
-          window.location.href="/OwnerDashboard"
           
+          window.location.href="/OwnerDashboard"
+         
+          
+        }).catch(()=>{
+          document.getElementById("register").style.display='block';
         })
 
     }
@@ -121,13 +153,13 @@ class Register extends Component {
 
 
   render() {
-    const { data, disable } = this.state
+    const { data, disable,loading } = this.state
     return (
       <div style={{ textAlign: 'center' }}>
         <Header />
 
         <div style={{ marginTop: '140px', marginBottom: '50px', textAlign: 'center', marginLeft: '160px', marginRight: '160px' }}>
-          <h2>REGISTRATION FORM</h2>
+          <h2 style={{color:'green'}}>REGISTRATION FORM</h2>
 
           <div className="form-group mt-4" >
             <label for="inputName" style={{ float: 'left' }}>Hall name</label>
@@ -138,6 +170,7 @@ class Register extends Component {
             <label for="inputAddress" style={{ float: 'left' }}>Address</label>
             <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" name="address" value={data.address} onChange={(e) => this.updateData(e.target)} />
           </div>
+        
 
           <div className="form-group">
             <label for="inputAddress" style={{ float: 'left' }}>Description</label>
@@ -147,7 +180,7 @@ class Register extends Component {
           <div className="form-row">
             <div className="col">
               <label for="inputCapacity" style={{ float: 'left' }}>Capacity</label>
-              <input type="number" className="form-control" placeholder="500" name="capacity" value={data.capacity} onChange={(e) => this.updateData(e.target)} />
+              <input type="text" className="form-control" placeholder="500" name="capacity" value={data.capacity} onChange={(e) => this.updateData(e.target)} />
             </div>
 
             <div className="col">
@@ -192,14 +225,24 @@ class Register extends Component {
           <br />
 
           <div className="form-group">
-            <label for="exampleFormControlFile1" style={{ float: 'left' }}>Upload hall images</label>
+            <label for="exampleFormControlFile1" style={{ float: 'left' }}>Upload hall images <label style={{color:'green'}}> (Atmost 3 pictures allowed!!) </label></label>
             <input type="file" accept="image/*" multiple className="form-control-file" id="exampleFormControlFile1" name="picture" onChange={(e) => this.updateFile(e.target)} />
           </div>
 
           <br />
 
           <div style={{ textAlign: 'center' }}>
-            <button type="submit" className="btn btn-success" onClick={() => this.addData()} disabled={this.state.disable} >Register</button>
+            <button type="submit" id="register" className="btn btn-success" onClick={() => this.addData()} disabled={this.state.disable} >Register</button>
+            {loading &&   <div className='sweet-loading'>
+        <BeatLoader
+          css={override}
+          sizeUnit={"px"}
+          size={100}
+          color={'#008F11'}
+          loading={loading}
+        /> 
+      </div>}
+       
           </div>
 
         </div>

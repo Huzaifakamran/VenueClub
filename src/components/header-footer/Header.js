@@ -18,7 +18,7 @@ class Header extends Component {
         this.state = {
             randomNo:'',
             open: false,
-            DropdownIsVisible: false,
+            // DropdownIsVisible: false,
             showLogin: true,
             showSignup: false,
             drawerOpen: false,
@@ -34,8 +34,8 @@ class Header extends Component {
                 phoneNumber: '',
                 password: '',
                 accountType: '',
-                paymentType: '',
-                numberType: '',
+                // paymentType: '',
+                // numberType: '',
                 secQuestion:'',
                 secAnswer:''
             },
@@ -46,8 +46,8 @@ class Header extends Component {
                 phoneNumber: '',
                 password:'',
                 accountType: '',
-                paymentType: '',
-                numberType: '',
+                // paymentType: '',
+                // numberType: '',
                 secQuestion:'',
                 secAnswer:''
             }
@@ -115,7 +115,7 @@ class Header extends Component {
             })
             await firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((res) => {
-                    if(email == "huzaifakamran@admin.com"){
+                    if(email == "venueclub786@gmail.com"){
                         swal({
                             title: "Login Successfully",
                             icon: "success"
@@ -210,15 +210,17 @@ class Header extends Component {
         else if(obj.phoneNumber.length < 11 || obj.phoneNumber.length > 11){
             swal('Enter valid phone number')
         }
-    
+        else if(obj.password != obj.confirmPassword){
+            swal("Oops!", "Password does not matched!", "error");
+        }
         else if (obj.accountType == 2) {
-            if (obj.paymentType == '' || obj.numberType == '') {
-                swal('Fill both textfield(s)')
-            }
-            else if(obj.numberType.length < 11 || obj.numberType.length > 11){
-                swal('Enter valid account number')
-            }
-            else {
+            // if (obj.paymentType == '' || obj.numberType == '') {
+            //     swal('Fill both textfield(s)')
+            // }
+            // else if(obj.numberType.length < 11 || obj.numberType.length > 11){
+            //     swal('Enter valid account number')
+            // }
+            // else {
                 this.setState({
                     disable: true
                 })
@@ -233,8 +235,8 @@ class Header extends Component {
                         phoneNumber: '',
                         password: '',
                         accountType: '',
-                        paymentType: '',
-                        numberType: '',
+                        // paymentType: '',
+                        // numberType: '',
                         secQuestion:'',
                         secAnswer:''
                     }
@@ -258,7 +260,7 @@ class Header extends Component {
                     .catch((error) => {
                         swal('something went wrong' + error);
                     });
-            }
+            // }
         }
         else {
             this.setState({
@@ -275,8 +277,8 @@ class Header extends Component {
                     password: '',
                     
                     accountType: '',
-                    paymentType: '',
-                    numberType: '',
+                    // paymentType: '',
+                    // numberType: '',
                     secQuestion:'',
                     secAnswer:''
                 }
@@ -336,12 +338,12 @@ class Header extends Component {
 
     updateData(e) {
         const { name, value } = e;
-        if (value == 2 && name === "accountType") {
-            this.setState({ DropdownIsVisible: true })
-        }
-        else if (value == 1 && name === "accountType") {
-            this.setState({ DropdownIsVisible: false })
-        }
+        // if (value == 2 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: true })
+        // }
+        // else if (value == 1 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: false })
+        // }
 
         this.setState({
             obj: {
@@ -353,12 +355,12 @@ class Header extends Component {
     }
     updateData1(e) {
         const { name, value } = e;
-        if (value == 2 && name === "accountType") {
-            this.setState({ DropdownIsVisible: true })
-        }
-        else if (value == 1 && name === "accountType") {
-            this.setState({ DropdownIsVisible: false })
-        }
+        // if (value == 2 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: true })
+        // }
+        // else if (value == 1 && name === "accountType") {
+        //     this.setState({ DropdownIsVisible: false })
+        // }
 
         this.setState({
             obj2: {
@@ -375,10 +377,10 @@ class Header extends Component {
             swal('Fill All textfield(s)')
         }
         else if (obj2.accountType == 2) {
-            if (obj2.paymentType == '' || obj2.numberType == '') {
-                swal('Fill')
-            }
-            else {
+            // if (obj2.paymentType == '' || obj2.numberType == '') {
+            //     swal('Fill')
+            // }
+            // else {
                 this.setState({
                     disable: true
                 })
@@ -389,8 +391,8 @@ class Header extends Component {
                     phoneNumber: '',
                     password:'',
                     accountType: '',
-                    paymentType: '',
-                    numberType: '',
+                    // paymentType: '',
+                    // numberType: '',
                     secQuestion:'',
                     secAnswer:''
                 }
@@ -408,7 +410,7 @@ class Header extends Component {
                               }})
                       
                     })
-            }
+            // }
         }
         else {
             this.setState({
@@ -421,8 +423,8 @@ class Header extends Component {
                 phoneNumber: '',
                 password:'',
                 accountType: '',
-                paymentType: '',
-                numberType: '',
+                // paymentType: '',
+                // numberType: '',
                 secQuestion:'',
                 secAnswer:''
             }
@@ -554,7 +556,7 @@ class Header extends Component {
     }
 
     render() {
-        const { obj, email, password,obj2, DropdownIsVisible ,phoneNumber,open} = this.state;
+        const { obj, email, password,obj2 ,phoneNumber,open} = this.state;
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-light bck_black fixed-top"
@@ -573,14 +575,14 @@ class Header extends Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav head_ul" style={{ marginLeft: '15%' }}>
+                        <ul className="navbar-nav head_ul" style={{ marginLeft: '25%' }}>
                             <li>  <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('Home')}>HOME</button> </li>
                             <li>  <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('Categories')}>CATEGORIES</button></li>
                             <li>   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.scrollToElement('AboutUs')}>ABOUT US</button></li>
                             <li>  <Link to="/PrivacyPolicy">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>PRIVACY POLICY</button></Link></li>
                             <li>  <Link to="/TermsAndCondition">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>TERMS & CONDITION</button></Link></li>
-                            <li>  <Link to="/PaymentMethod">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>PAYMENT METHOD</button></Link></li>
-                          
+                            {/* <li>  <Link to="/PaymentMethod">   <button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }}>PAYMENT METHOD</button></Link></li>
+                           */}
                             {!this.state.user ? <li>  <button type="button" style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} data-toggle="modal" data-target="#exampleModalCenter" >LOGIN / SIGNUP</button></li> :
                                 <li>  <button type="button" style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} onClick={() => this.logout()} >LOGOUT</button></li>}
                                 {/* <li>  <Link to="/AdminDashboard"><button style={{ background: 'none', border: 'none', color: '#ffffff', margin: '10px' }} >Admin</button></Link></li> */}
@@ -720,7 +722,7 @@ class Header extends Component {
                                         <option value="2">Hall Owner</option>
                                     </select>
                                     <br /><br />
-                                    {DropdownIsVisible &&
+                                    {/* {DropdownIsVisible &&
                                         <div>
                                             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj.paymentType} onChange={(e) => this.updateData(e.target)}>
                                                 <option selected>Select Payment Method...</option>
@@ -732,7 +734,7 @@ class Header extends Component {
                                             </div>
                                         </div>
 
-                                    }
+                                    } */}
 
                                 </div>
 
@@ -811,7 +813,7 @@ class Header extends Component {
                                         <option value="2">Hall Owner</option>
                                     </select>
                                     <br /><br />
-                                    {DropdownIsVisible &&
+                                    {/* {DropdownIsVisible &&
                                         <div>
                                             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj2.paymentType} onChange={(e) => this.updateData1(e.target)}>
                                                 <option selected>Select Payment Method...</option>
@@ -823,7 +825,7 @@ class Header extends Component {
                                             </div>
                                         </div>
 
-                                    }
+                                    } */}
 
                                 </div>
                                 <div className="modal-footer d-flex justify-content-center" style={{ textAlign: 'center' }}>

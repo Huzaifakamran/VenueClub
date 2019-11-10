@@ -18,7 +18,7 @@ class Categories extends Component {
                     <div className="container_category column" style={{float:'left',width:'33.33%',padding:'15px'}}>
                     <img  className="category_image" src={require('../../resources/images/Categories/1.jpg')} alt="Notebook"/> 
                     <div className="middle">
-                    <div className="text_category">Banquets</div>
+                    <div className="text_category" onClick={()=>window.location.href='/searchResult'}>Banquets</div>
                     </div>
                     </div>
                     
@@ -29,7 +29,7 @@ class Categories extends Component {
                     <div className="container_category column" style={{float:'left',width:'33.33%',padding:'15px'}}>
                     <img  className="category_image" src={require('../../resources/images/Categories/2.jpg')} alt="Notebook"/>
                     <div className="middle">
-                    <div className="text_category">Lawns</div>
+                    <div className="text_category" onClick={()=>window.location.href='/searchResult'}>Halls</div>
                     </div>
                     </div>
                     
@@ -41,7 +41,7 @@ class Categories extends Component {
                     <div className="container_category column" style={{float:'left',width:'33.33%',padding:'15px'}}>
                     <img  className="category_image" src={require('../../resources/images/Categories/3.jpg')} alt="Notebook" />
                     <div className="middle">
-                    <div className="text_category">Halls</div>
+                    <div className="text_category" onClick={()=>window.location.href='/searchResult'}>Lawns</div>
                     </div>
                     </div>
                     

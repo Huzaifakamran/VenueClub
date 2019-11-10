@@ -106,8 +106,13 @@ const useStyles = makeStyles(theme => ({
     height: 240,
   },
 }));
+function logout(){
+  sessionStorage.removeItem('user')
+  window.location.reload()
+}
 
-export default function Dashboard() {
+
+export default function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -142,11 +147,29 @@ export default function Dashboard() {
            Admin Dashboard
           </Typography>
 
-          <Button style={{ color: 'white' }} onClick={() => window.location.reload()}>Home</Button>
-        
-          <IconButton color="inherit" title="Profile">
-          <UserIcon/>
-          </IconButton>
+          <div className="dropdown">
+                <button className="btn btn-success dropdown-toggle" style={{marginRight:60}} type="button" data-toggle="dropdown">Profile
+                <span className="caret"></span></button>
+                <ul className="ml dropdown-menu" style={{textAlign:'center', backgroundColor:' #383838',color:'#fff',float:'left'}}>
+                  <br/>
+                  <li>Venue Club</li><hr style={{backgroundColor:'#ffffff'}}/>
+                  
+                  <li><a onClick={() => window.location.href='/AdminDashboard'}>Home</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/adminDashboard/Users'}>Users</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/adminDashboard/RegisteredHalls'}>Halls</a></li>
+                  <br/>
+                  <li><a onClick={() => window.location.href='/adminDashboard/Complaints'}>Complaints</a></li>
+                  <br/>
+                
+                 
+                 
+                 <hr style={{backgroundColor:'#ffffff'}}/>
+                  <li><a onClick={logout}>Logout</a></li>
+                  <br/>
+                </ul>
+              </div>
 
 
         </Toolbar>

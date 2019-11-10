@@ -47,7 +47,7 @@ class Home extends Component {
             <li><a href={'https://www.facebook.com/VenueClub4/'}><i class="fa fa-facebook"></i></a></li>
             <li><i class="fa fa-whatsapp"></i></li>
             <li><i class="fa fa-twitter"></i></li>
-            <li><i class="fa fa-youtube"></i></li>
+            <li><a href={'https://www.youtube.com/'}><i class="fa fa-youtube"></i></a></li>
           </ul>
         </div>
         

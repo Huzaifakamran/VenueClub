@@ -36,7 +36,7 @@ class ViewVenue extends Component {
         super(props)
 
         this.state = {
-            DropdownIsVisible: false,
+            // DropdownIsVisible: false,
             view: sessionStorage.getItem('view') ? JSON.parse(sessionStorage.getItem('view')) : false,
             userData: '',
             visible: false,
@@ -63,8 +63,8 @@ class ViewVenue extends Component {
                 email: '',
                 phoneNumber: '',
                 accountType: '',
-                paymentType: '',
-                numberType: ''
+                // paymentType: '',
+                // numberType: ''
             },
             images: [],
             currentIndex: 0,
@@ -221,7 +221,12 @@ class ViewVenue extends Component {
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
-                        swal('login successfull')
+                        swal({
+                            title: "successfully!",
+                            text: "Login Successfully",
+                            icon: "success",
+                            
+                        });
                         window.$('#exampleModalCenter').modal('hide');
                         if (val1.accountType === "2") {
                             window.location.href = '/OwnerDashboard'
@@ -267,13 +272,13 @@ class ViewVenue extends Component {
             swal('Enter valid phone number')
         }
         else if (obj.accountType == 2) {
-            if (obj.paymentType == '' || obj.numberType == '') {
-                swal('Fill')
-            }
-            else if(obj.numberType.length < 11 || obj.numberType.length > 11){
-                swal('Enter valid account number')
-            }
-            else {
+            // if (obj.paymentType == '' || obj.numberType == '') {
+            //     swal('Fill')
+            // }
+            // else if(obj.numberType.length < 11 || obj.numberType.length > 11){
+            //     swal('Enter valid account number')
+            // }
+            // else {
                 this.setState({
                     disable: true
                 })
@@ -289,14 +294,19 @@ class ViewVenue extends Component {
                         password: '',
                         confirmPassword: '',
                         accountType: '',
-                        paymentType: '',
-                        numberType: ''
+                        // paymentType: '',
+                        // numberType: ''
                     }
                     firebase.database().ref('users').child(`${res.user.uid}/`).set(obj)
                         .then(() => {
                             sessionStorage.setItem('user', JSON.stringify(obj))
                             this.setState({ obj: obj1, disable: false })
-                            swal('Signup successfull');
+                            swal({
+                                title: "successfully!",
+                                text: "Signup Successfully",
+                                icon: "success",
+                                // button: "OK",
+                            });
                             window.$('#signupModalCenter').modal('hide');
                             window.location.href = '/OwnerDashboard'
                         })
@@ -304,7 +314,7 @@ class ViewVenue extends Component {
                     .catch((error) => {
                         swal('something went wrong' + error);
                     });
-            }
+            // }
         }
         else {
             this.setState({
@@ -322,13 +332,18 @@ class ViewVenue extends Component {
                     password: '',
                     confirmPassword: '',
                     accountType: '',
-                    paymentType: '',
-                    numberType: ''
+                    // paymentType: '',
+                    // numberType: ''
                 }
                 firebase.database().ref('users').child(`${res.user.uid}/`).set(obj)
                     .then(() => {
                         sessionStorage.setItem('user', JSON.stringify(obj))
-                        swal('Signup successfull');
+                          swal({
+                                title: "successfully!",
+                                text: "Signup Successfully",
+                                icon: "success",
+                                // button: "OK",
+                            });
                         window.$('#signupModalCenter').modal('hide');
                         if (this.state.selectedHall) {
                             this.props.form.setFieldsValue({
@@ -415,28 +430,20 @@ class ViewVenue extends Component {
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
-                        swal('login successfull')
-                        window.$('#exampleModalCenter').modal('hide');
-                        if (val1.accountType === "2") {
-                            window.location.href = '/OwnerDashboard'
-                        }
-                        else if (this.state.selectedHall) {
-                            this.props.form.setFieldsValue({
-                                name: val1.fName
-                            })
-
-                            this.setState({
-                                user: val1,
-                                visible: true,
-                                disable: false
-                            })
-                        }
-                        else {
-                            this.setState({
-                                user: val1,
-                                disable: false
-                            })
-                        }
+                        swal({
+                            title: "login Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#exampleModalCenter').modal('hide');
+                                if (val1.accountType === "1") {
+                                    window.location.href = '/userDashboard'
+                                }
+                                else {
+                                    window.location.href = '/OwnerDashboard'
+                                }
+                              }})
+                      
                     })
                 }
             })
@@ -477,28 +484,20 @@ class ViewVenue extends Component {
                         var val1 = value.val()
                         val1['key'] = value.key
                         sessionStorage.setItem('user', JSON.stringify(val1))
-                        swal('login successfull')
-                        window.$('#exampleModalCenter').modal('hide');
-                        if (val1.accountType === "2") {
-                            window.location.href = '/OwnerDashboard'
-                        }
-                        else if (this.state.selectedHall) {
-                            this.props.form.setFieldsValue({
-                                name: val1.fName
-                            })
-
-                            this.setState({
-                                user: val1,
-                                visible: true,
-                                disable: false
-                            })
-                        }
-                        else {
-                            this.setState({
-                                user: val1,
-                                disable: false
-                            })
-                        }
+                        swal({
+                            title: "login Successfully",
+                            icon: "success"
+                          }).then((okay) =>{
+                              if(okay){
+                                window.$('#exampleModalCenter').modal('hide');
+                                if (val1.accountType === "1") {
+                                    window.location.href = '/userDashboard'
+                                }
+                                else {
+                                    window.location.href = '/OwnerDashboard'
+                                }
+                              }})
+                     
                     })
                 }
             })
@@ -518,10 +517,10 @@ class ViewVenue extends Component {
             swal('Fill All textfield(s)')
         }
         else if (obj2.accountType == 2) {
-            if (obj2.paymentType == '' || obj2.numberType == '') {
-                swal('Fill')
-            }
-            else {
+            // if (obj2.paymentType == '' || obj2.numberType == '') {
+            //     swal('Fill')
+            // }
+            // else {
                 this.setState({
                     disable: true
                 })
@@ -531,18 +530,23 @@ class ViewVenue extends Component {
                     email: '',
                     phoneNumber: '',
                     accountType: '',
-                    paymentType: '',
-                    numberType: ''
+                    // paymentType: '',
+                    // numberType: ''
                 }
                 firebase.database().ref('users').child(`${obj2.uid}/`).set(obj2)
                     .then(() => {
                         sessionStorage.setItem('user', JSON.stringify(obj2))
                         this.setState({ obj2: obj1, disable: false })
-                        swal('Signup successfull');
+                        swal({
+                            title: "successfully!",
+                            text: "Signup Successfully",
+                            icon: "success",
+                            // button: "OK",
+                        });
                         window.$('#AdditionalInfo').modal('hide');
                         window.location.href = '/OwnerDashboard'
                     })
-            }
+            // }
         }
         else {
             this.setState({
@@ -554,14 +558,19 @@ class ViewVenue extends Component {
                 email: '',
                 phoneNumber: '',
                 accountType: '',
-                paymentType: '',
-                numberType: ''
+                // paymentType: '',
+                // numberType: ''
             }
             firebase.database().ref('users').child(`${obj2.uid}/`).set(obj2)
                 .then(() => {
                     sessionStorage.setItem('user', JSON.stringify(obj2))
                     this.setState({ obj2: obj1, disable: false })
-                    swal('Signup successfull');
+                    swal({
+                        title: "successfully!",
+                        text: "Signup Successfully",
+                        icon: "success",
+                        // button: "OK",
+                    });
                     window.$('#AdditionalInfo').modal('hide');
                     this.props.form.setFieldsValue({
                         name: obj2.fName
@@ -577,7 +586,7 @@ class ViewVenue extends Component {
 
 
     render() {
-        const { data, userData, obj, email, password, user, showDescription, view, visible, phoneNumber, obj2, DropdownIsVisible } = this.state
+        const { data, userData, obj, email, password, user, showDescription, view, visible, phoneNumber, obj2 } = this.state
         const { getFieldDecorator } = this.props.form;
 
         return (
@@ -645,8 +654,8 @@ class ViewVenue extends Component {
                                                 <div className="modal-body" style={{ textAlign: 'center' }}>
                                                     <img style={{ width: '100px', height: '100px' }} src={require('../../resources/images/final.png')} />
                                                     <br /><br />
-                                                    <FacebookLoginButton />
-                                                    <GoogleLoginButton />
+                                                    <FacebookLoginButton onClick={() => this.facebookLogin()} />
+                                                     <GoogleLoginButton onClick={() => this.googleLogin()} />
 
                                                     <br />
 
@@ -704,14 +713,8 @@ class ViewVenue extends Component {
 
 
                                                 <div className="modal-body" style={{ textAlign: 'center' }}>
+                                                <img style={{ width: '100px', height: '100px' }} src={require('../../resources/images/final.png')} />
                                                     <br /><br />
-                                                    <FacebookLoginButton />
-                                                    <GoogleLoginButton />
-
-                                                    <br />
-
-                                                    <p style={{ color: 'black' }}>OR</p>
-
 
                                                     <div className="form-group">
                                                         <input className="form-control" id="f_name" name="fName" value={obj.fName} onChange={(e) => this.updateData(e.target)} aria-describedby="emailHelp" placeholder="First name" />
@@ -743,7 +746,7 @@ class ViewVenue extends Component {
                                                         <option value="2">Hall Owner</option>
                                                     </select>
                                                     <br /><br />
-                                                    {DropdownIsVisible &&
+                                                    {/* {DropdownIsVisible &&
                                                         <div>
                                                             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj.paymentType} onChange={(e) => this.updateData(e.target)}>
                                                                 <option selected>Select Payment Method...</option>
@@ -754,7 +757,7 @@ class ViewVenue extends Component {
                                                                 <input type="number" name="numberType" value={obj.numberType} onChange={(e) => this.updateData(e.target)} className="form-control" id="numberType1" placeholder="Enter Your Account phone number (0300xxxxxxx)" />
                                                             </div>
                                                         </div>
-                                                    }
+                                                    } */}
 
                                                 </div>
 
@@ -814,7 +817,7 @@ class ViewVenue extends Component {
                                                         <option value="2">Hall Owner</option>
                                                     </select>
                                                     <br /><br />
-                                                    {DropdownIsVisible &&
+                                                    {/* {DropdownIsVisible &&
                                                         <div>
                                                             <select className="custom-select mr-sm-2" id="inlineFormCustomSelect" name="paymentType" value={obj2.paymentType} onChange={(e) => this.updateData1(e.target)}>
                                                                 <option selected>Select Payment Method...</option>
@@ -826,7 +829,7 @@ class ViewVenue extends Component {
                                                             </div>
                                                         </div>
 
-                                                    }
+                                                    } */}
 
                                                 </div>
                                                 <div className="modal-footer d-flex justify-content-center" style={{ textAlign: 'center' }}>
@@ -915,7 +918,7 @@ class ViewVenue extends Component {
 
                 <Modal
                     visible={visible}
-                    title="Create a new collection"
+                    title="REGISTRATION FORM"
                     okText="Submit"
                     onCancel={() => this.setState({ visible: false })}
                     onOk={this.handleSubmit}

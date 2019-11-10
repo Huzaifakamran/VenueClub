@@ -73,7 +73,7 @@ render(){
       </Table>
      <br/>
         <Link style={{color:'green'}} color="primary" onClick={()=> window.location.href='/adminDashboard/Users'}>
-          See more orders
+          See more users
         </Link>
 
     </React.Fragment>

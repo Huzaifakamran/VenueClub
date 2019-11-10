@@ -43,14 +43,14 @@ export const mainListItems = (
       </ListItem>
       </Link>
 
-      <Link to="/adminDashboard/Bookings">
+      {/* <Link to="/adminDashboard/Bookings">
       <ListItem button>
         <ListItemIcon>
           <BookingIcon />
         </ListItemIcon>
         <ListItemText primary="Bookings" style={{color:'#000000'}}/>
       </ListItem>
-      </Link>
+      </Link> */}
 
       <ListItem button>
         <ListItemIcon>
